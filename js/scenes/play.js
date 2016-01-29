@@ -8,6 +8,7 @@ define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map'],
 				viewport.dragable(true);
 
 
+
 				this.add(viewport);
 			}
 

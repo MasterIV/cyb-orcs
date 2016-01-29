@@ -3,11 +3,12 @@ define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map'],
 			function PlayScene() {
 				Scene.call(this);
 
+				this.money = 500;
+				this.housings = 10;
+
 				var viewport = new ViewPort(true);
 				viewport.add(new Map());
 				viewport.dragable(true);
-
-
 
 				this.add(viewport);
 			}

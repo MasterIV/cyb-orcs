@@ -5,6 +5,7 @@ define(['basic/entity', 'geo/v2', 'geo/rect', 'basic/morph'], function(Entity, V
 		this.subject = null;
 		this.drag = false;
 		this.dragging = null;
+		this.moved = false;
 	}
 
 	ViewPort.prototype = new Entity();
@@ -50,12 +51,22 @@ define(['basic/entity', 'geo/v2', 'geo/rect', 'basic/morph'], function(Entity, V
 	};
 
 	ViewPort.prototype.onMouseUp = function(pos) {
-		if(this.drag) this.dragging = null;
+		if(this.drag) {
+			this.dragging = null;
+			this.moved = false;
+		}
 	};
 
 	ViewPort.prototype.setPosition = function(x, y) {
+		var before = this.position.clone();
 		this.position.x = Math.max(Math.min(0, x), this.visible.x-this.size.x );
 		this.position.y = Math.max(Math.min(0, y), this.visible.y-this.size.y );
+		this.moved = this.moved || !before.equal(this.position);
+	};
+
+	ViewPort.prototype.click = function(pos) {
+		if(this.dragging == null || !this.moved)
+			Entity.prototype.click.call(this, pos);
 	};
 
 	ViewPort.prototype.update = function(delta) {

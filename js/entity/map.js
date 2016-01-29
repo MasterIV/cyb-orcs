@@ -38,6 +38,13 @@ define(['basic/entity', 'geo/v2'], function(Entity, V2) {
 		ctx.drawImage(this.canvas, 0, 0);
 	};
 
+	Map.prototype.onClick = function(pos) {
+		var x = Math.floor( pos.x/size.tile.x);
+		var y = Math.floor( pos.y/size.tile.y);
+
+		console.log(x,y);
+	};
+
 	Map.prototype.selectRoom = function(layout, type) {
 
 	};

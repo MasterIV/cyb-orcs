@@ -11,7 +11,8 @@ define(['core/graphic', 'geo/v2', 'basic/entity'],
 
 			ImageEntity.prototype.onDraw = function(ctx) {
 				ctx.globalAlpha = this.alpha;
-				ctx.drawImage(this.img, 0, 0, this.size.x|0, this.size.y|0, 0, 0, (this.size.x*this.scale)|0, (this.size.y*this.scale)|0);
+				if(this.size.x >= 1 && this.size.y >= 1)
+					ctx.drawImage(this.img, 0, 0, this.size.x | 0, this.size.y | 0, 0, 0, (this.size.x * this.scale) | 0, (this.size.y * this.scale) | 0);
 				ctx.globalAlpha = 1;
 			};
 

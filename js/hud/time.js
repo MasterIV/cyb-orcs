@@ -19,7 +19,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.freeze = new ImageEntity(Zero(), 'img/time_freeze.png');
 
 		this.time = 0;
-		this.day_length = 45000;
+		this.day_length = 42000;
 		this.paused = false;
 	}
 

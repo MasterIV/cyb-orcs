@@ -8,7 +8,15 @@ var rooms = {
 		supply: 0.5,
 		gold: 0.5,
 		cost: 0,
-		cooldown: 7500
+		cooldown: 7000
+	},
+	housing: {
+		name: 'Den',
+		desc: 'Each tile of the den provides enough sleeping space for one orc.',
+		cost: 10,
+		hp: 40,
+		pic: 'img/rooms/housing_white.png',
+		supply: 1
 	},
 	meat: {
 		name: 'Butchery',
@@ -25,16 +33,8 @@ var rooms = {
 		cost: 15,
 		hp: 50,
 		pic: 'img/rooms/gold_white.png',
-		cooldown: 7500,
+		cooldown: 7000,
 		gold: 1
-	},
-	housing: {
-		name: 'Den',
-		desc: 'Each tile of the den provides enough sleeping space for one orc.',
-		cost: 10,
-		hp: 40,
-		pic: 'img/rooms/housing_white.png',
-		supply: 1
 	},
 	training: {
 		name: 'Gym',

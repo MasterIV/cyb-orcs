@@ -1,4 +1,4 @@
-define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'], function(Entity, V2, config, graphic, Image) {
+define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image', 'entity/moneymation'], function(Entity, V2, config, graphic, Image, Moneymation) {
 	graphic.add('img/tiles_spritesheet.png');
 	graphic.add('img/doors.png');
 
@@ -82,6 +82,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		}
 
 		if(costs) {
+			this.add(new Moneymation(costs));
 			//this.add(new Moneymation(...));
 			scene.money -= costs;
 		}

@@ -38,7 +38,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			0, 0, ts.x, ts.y);
 	};
 
-	function Room(pos, shape, definition) {
+	function Room(pos, shape, definition, scene) {
 		Entity.call(this, pos);
 		this.shape = shape;
 		this.definition = definition;
@@ -47,12 +47,11 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.id = roomId++;
 		this.lookup = {};
 		this.neighbours = [];
-
 		this.supply = 0;
 		this.gold = 0;
 		this.cooldown = definition.cooldown;
-
 		var self = this;
+
 		this.shape.each(function () {
 			if(definition.supply)
 				this.supply += definition.supply;
@@ -63,6 +62,11 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 		if(!definition.nobuild) {
 			this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
+		}
+
+		if(this.definition.cost){
+			var money = scene.money - this.definition.cost;
+			scene.money = money;
 		}
 	}
 

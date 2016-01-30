@@ -3,9 +3,10 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 	var size = config.size;
 	var probability = .1;
 
-	function Map() {
+	function Map(scene) {
 		Entity.call(this, Zero(), new V2(size.map.x * size.tile.x, size.map.y * size.tile.y));
 
+		this.scene = scene;
 		this.canvas = document.createElement('canvas');
 		this.canvas.width = this.size.x;
 		this.canvas.height = this.size.y;
@@ -50,7 +51,7 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 
 	Map.prototype.addRoom = function (pos, layout, type) {
 		var self = this;
-		var room = new Room(new V2(pos.x * size.tile.x, pos.y * size.tile.y), layout, type);
+		var room = new Room(new V2(pos.x * size.tile.x, pos.y * size.tile.y), layout, type, this.scene);
 		room.setParent(this);
 
 		layout.eachRel(pos, function (x, y) {

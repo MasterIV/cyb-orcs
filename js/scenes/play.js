@@ -7,7 +7,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.housings = 10;
 				this.orcs = 3;
 
-				var map = new Map();
+				var map = new Map(this);
 				var cursor = new Cursor(map);
 
 				map.addRoom(new V2(9,9), new Layout(shapes[16]), rooms.main);

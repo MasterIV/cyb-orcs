@@ -26,7 +26,7 @@ define(['basic/entity', 'basic/image', 'basic/morph', 'basic/text', 'config/font
 	Resources.prototype.onUpdate = function(delta) {
 		this.gold_text.text = this.parent.parent.money;
 		this.orc_text.text  = this.parent.parent.orcs + '/' + this.parent.parent.housings;
-	}
+	};
 
 	return Resources;
 });

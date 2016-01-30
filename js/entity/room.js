@@ -61,8 +61,9 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			self.capacity++;
 		});
 
-		if(!definition.nobuild)
-			this.add(new Image(shape.iconPos().sum(new V2(5,5)), definition.pic));
+		if(!definition.nobuild) {
+			this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
+		}
 	}
 
 	Room.prototype = new Entity();

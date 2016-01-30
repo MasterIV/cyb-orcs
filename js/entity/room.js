@@ -85,6 +85,8 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			this.add(new Moneymation(costs, false));
 			scene.money -= costs;
 		}
+
+		console.log(this);
 	}
 
 	Room.prototype = new Entity();
@@ -128,6 +130,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		if(this.overlay) this.overlay.alpha = 1-(this.hp/this.maxHp);
 		if(this.hp > 0 && this.gold) {
 			this.delta += delta;
+
 			if(this.delta >= this.cooldown) {
 				this.delta -= this.cooldown;
 				var additionalMoney = (this.progress*this.gold*1000/this.cooldown)|0;

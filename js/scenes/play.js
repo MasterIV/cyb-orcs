@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/button'],
-		function(Scene, TiledMap, ViewPort, V2, Map, Button ) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/button'],
+		function(Scene, ViewPort, V2, Map, Button ) {
 			function PlayScene() {
 				Scene.call(this);
 

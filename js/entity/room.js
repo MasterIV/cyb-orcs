@@ -83,7 +83,6 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 		if(costs) {
 			this.add(new Moneymation(costs));
-			//this.add(new Moneymation(...));
 			scene.money -= costs;
 		}
 	}

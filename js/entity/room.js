@@ -1,4 +1,5 @@
-define(['basic/entity', 'geo/v2', 'config/config'], function(Entity, V2, config) {
+define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Entity, V2, config, graphic) {
+	graphic.add('img/tiles_spritesheet.png');
 	var ts = config.size.tile;
 	var roomId = 1;
 
@@ -20,7 +21,7 @@ define(['basic/entity', 'geo/v2', 'config/config'], function(Entity, V2, config)
 	};
 
 	function Room(pos, shape, definition) {
-		this.position = pos;
+		Entity.call(this, pos);
 		this.shape = shape;
 		this.definition = definition;
 		this.capacity = 0;
@@ -86,16 +87,9 @@ define(['basic/entity', 'geo/v2', 'config/config'], function(Entity, V2, config)
 	};
 
 	Room.prototype.onDraw = function(ctx) {
-		this.shape.each(function(x,y) {
-			ctx.fillStyle = '#885';
-			ctx.fillRect(x*ts.x, y*ts.y, ts.x, ts.y);
-
-			ctx.fillStyle = '#333';
-			if( x == 0 || !this.data[y][x-1] ) ctx.fillRect(x*ts.x, y*ts.y, 2, ts.y);
-			if( x == 2 || !this.data[y][x+1] ) ctx.fillRect((x+1)*ts.x-2, y*ts.y, 2, ts.y);
-			if( y == 0 || !this.data[y-1][x] ) ctx.fillRect(x*ts.x, y*ts.y, ts.x, 2);
-			if( y == 1 || !this.data[y+1][x] ) ctx.fillRect(x*ts.x, (1+y)*ts.y-2, ts.x, 2);
-		});
+		ctx.drawImage(graphic['img/tiles_spritesheet.png'],
+			0, shapes.indexOf(this.shape.data)*ts.y*2, ts.x*3, ts.y*2,
+			0, 0, ts.x*3, ts.y*2 );
 	};
 
 	return Room;

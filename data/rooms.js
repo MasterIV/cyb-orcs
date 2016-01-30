@@ -51,3 +51,5 @@ var rooms = {
 		cooldown: 3000
 	}
 };
+
+var startMoney = 300;

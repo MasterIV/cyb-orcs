@@ -75,11 +75,11 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.hp = this.maxHp;
 		scene.housings += this.supply;
 
-		if(!definition.nobuild) {
+		//if(!definition.nobuild) {
 			this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
 			this.overlay = new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic.replace('white', 'red'), .8);
 			this.add(this.overlay);
-		}
+		//}
 
 		if(costs) {
 			this.add(new Moneymation(costs, false));
@@ -89,7 +89,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 	Room.prototype = new Entity();
 
-	Room.prototype.attack = function (damage) {
+	Room.prototype.harm = function (damage) {
 		if(this.hp < 1) return;
 		this.hp = Math.max(0, this.hp - damage);
 		if(this.hp < 1) this.scene.housings -= this.supply;

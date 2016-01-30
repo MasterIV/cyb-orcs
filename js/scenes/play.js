@@ -3,12 +3,13 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 			function PlayScene() {
 				Scene.call(this);
 
-				this.money = 500;
+				this.money = startMoney;
 				this.housings = 0;
 				this.orcs = 3;
 
 				var map = new Map(this);
 				var cursor = new Cursor(map);
+				var self = this;
 
 				map.addRoom(new V2(9,9), new Layout(shapes[16]), rooms.main, this);
 
@@ -27,6 +28,9 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.viewport.centerSelf();
 
 				this.add( new HUD(this.size, cursor) );
+				this.add(Button.create(new V2(20, 200), function() {
+					self.viewport.add(new Creature(new V2(10,10), map, 1, true));
+				}).rect(50,50));
 				this.paused = false;
 			}
 

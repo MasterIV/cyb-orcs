@@ -5,6 +5,8 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		graphic.add('img/orc_red_spritesheet.png');
 		graphic.add('img/orc_spritesheet.png');
 		graphic.add('img/select_arrow.png');
+		graphic.add('img/fight_animation.png');
+		graphic.add('img/death.png');
 
 		var ts = config.size.tile;
 		var actionSpeed = 1000;
@@ -13,7 +15,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			Entity.call(this, new V2(ts.x * pos.x, ts.y * pos.y), new V2(ts.x, ts.y));
 
 			var img = enemy ? 'img/hero_silver_spritesheet.png' : 'img/orc_spritesheet.png';
-			this.img = new Animation(img, new V2(15, 15), new V2(4, 6), 200, true);
+			this.img = new Animation(img, new V2(15, 15), new V2(4, enemy ? 4 : 6), 200, true);
 
 			this.add(this.img);
 			this.cursor = new Image(new V2(42, -20), 'img/select_arrow.png', .5);
@@ -43,6 +45,16 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		}
 
 		Creature.prototype = new Entity();
+
+		Creature.prototype.onDraw = function(ctx) {
+			if(this.hp < this.skills.hp) {
+				var p = (80*this.hp/this.skills.hp)|0;
+				ctx.fillStyle = 'red';
+				ctx.fillRect(10, 10+(this.enemy*80), 80, 5);
+				ctx.fillStyle = 'green';
+				ctx.fillRect(10, 10+(this.enemy*80), p, 5);
+			}
+		}
 
 		Creature.prototype.train = function (skill) {
 			this.ep[skill]++;
@@ -107,22 +119,29 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 				if (this.cooldown >= actionSpeed) {
 					this.cooldown -= actionSpeed;
 					var room = this.map.get(this.mapPos.x, this.mapPos.y);
-					var target = this.findCreatureTarget(room);
+					var enemy = this.findCreatureTarget(room);
 
-					if(target) {
-						target.harm(this.skills.attack);
+					if(enemy) {
+						enemy.harm(this.skills.attack);
+						this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(-25,-25)), new V2(5, 1), 200));
 						this.train('attack');
 						this.train('hp');
 						return;
 					}
 
 					if( this.enemy ) {
-						if (room.hp > 1) room.attack(this.skills.attack);
+						if (room.hp > 1) {
+							room.harm(this.skills.attack);
+							this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(-25,-25)), new V2(5, 1), 200));
+							console.log("attack the room");
+						}
+
 						if (room.hp < 1) {
+							console.log("search new target");
 							var target = this.findRoomTarget();
 							if (target) this.walk(target);
 						}
-					}else {
+					} else {
 						room.use(this);
 					}
 				}
@@ -151,10 +170,11 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		Creature.prototype.findRoomTarget = function() {
 			var closest = null;
 			var dist = null;
+			var self = this;
 
 			this.map.each(function(r, p) {
 				if(r.hp < 1) return;
-				var d = this.mapPos.dist(p);
+				var d = self.mapPos.dist(p);
 				if( dist = null || d < dist ) {
 					closest = p;
 					dist = d;
@@ -164,7 +184,6 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			return closest;
 		};
 
-
 		Creature.prototype.walk = function (dest) {
 			var target = this.map.get(dest.x, dest.y);
 			if (target == null || typeof(target) != "object") return;
@@ -173,8 +192,12 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			this.dest = dest;
 		};
 
-		Creature.prototype.harm = function () {
-
+		Creature.prototype.harm = function (dmg) {
+			this.hp -= dmg;
+			if(this.hp < 1) {
+				this.parent.remove(this);
+				this.parent.add( new Animation('img/death.png', this.position.sum(new V2(10,10)), new V2(7, 1), 200));
+			}
 		};
 
 		return Creature;

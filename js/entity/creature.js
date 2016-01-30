@@ -57,7 +57,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		};
 
 		Creature.prototype.train = function (skill) {
-			this.ep[skill]++;
+			this.ep[skill]+=epRate;
 			if (getLevel(this.ep[skill]) > this.levels[skill]) {
 				this.levels[skill]++;
 				this.skills[skill] = skills[skill].formel(this.levels[skill]);

@@ -6,6 +6,8 @@ var skills = {
 	repair: { formel: function(n) { return n*2; }}
 };
 
+var epRate = 1;
+
 function getEp(level) {
 	return (level*level-level)*30;
 }

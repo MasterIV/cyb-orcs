@@ -1,11 +1,12 @@
 define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 	graphic.add('img/gold_icon.png');
 
-	function Moneymation(cost) {
+	function Moneymation(cost, moreMoney) {
 		Entity.call(this);
 		this.image = graphic['img/gold_icon.png'];
 		this.animationWay = 0;
 		this.cost = cost;
+		this.moreMoney = moreMoney;
 	}
 
 	Moneymation.prototype = new Entity();
@@ -19,10 +20,17 @@ define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 	};
 
 	Moneymation.prototype.onDraw = function (ctx) {
-		ctx.font = "14px arial";
-		ctx.fillStyle = "red";
-		ctx.fillText("-"+this.cost, 20, (this.animationWay * 2) * -1);
-		ctx.drawImage(this.image, 0, (this.animationWay * 2) * -1, 20, 20);
+		if (this.moreMoney && this.cost != 0){
+			ctx.font = "14px arial";
+			ctx.fillStyle = "white";
+			ctx.fillText("+"+this.cost, 20, ((this.animationWay * 2) * -1) + 15);
+			ctx.drawImage(this.image, 0, (this.animationWay * 2) * -1, 20, 20);
+		} else if (this.cost != 0) {
+			ctx.font = "14px arial";
+			ctx.fillStyle = "red";
+			ctx.fillText("-"+this.cost, 20, (this.animationWay * 2) * -1);
+			ctx.drawImage(this.image, 0, (this.animationWay * 2) * -1, 20, 20);
+		}
 	};
 
 	return Moneymation;

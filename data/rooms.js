@@ -2,6 +2,7 @@ var rooms = {
 	main: {
 		name: 'Temple',
 		desc: 'Enables you to manifest your will in the world of the immortal.',
+		hp: 150,
 		pic: 'img/rooms/base_white.png',
 		nobuild: true,
 		supply: 0.5,

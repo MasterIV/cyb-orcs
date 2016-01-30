@@ -1,24 +1,8 @@
-define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'], function(Entity, V2, Room, config, graphic) {
+define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic', 'definition/layout'], function(Entity, V2, Room, config, graphic, Layout) {
 	graphic.add('img/tiles_background.png');
 	var size = config.size;
 	var probability = .1;
 
-	function Layout(data) {
-		this.data = data;
-
-		this.each = function(callback) {
-			for(var x = 0; x < 3; x++)
-				for(var y = 0; y < 2; y++)
-					if(data[y][x])
-						callback.call(this, x, y);
-		};
-
-		this.eachRel = function(pos, callback) {
-			this.each(function(x, y) {
-				callback.call(this, x+pos.x, y+pos.y);
-			});
-		};
-	}
 	//
 	//function Path() {
 	//	this.nodes = [];

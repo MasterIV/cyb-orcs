@@ -83,6 +83,9 @@ define(['basic/button', 'basic/entity', 'basic/morph', 'basic/rect', 'basic/text
 		self.parent.remove( self );
 		self.parent.add( self.buildmenu );
 		self.buildmenu.moveIn();
+		self.text.text = '';
+		self.text2.text = '';
+		self.text3.text = '';
 	};
 
 	return Tooltip;

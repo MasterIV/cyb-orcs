@@ -1,47 +1,46 @@
 define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'geo/v2', 'geo/rect', 'hud/tooltip'],
 	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, V2, Rect, Tooltip) {
 
-	g.add('img/hud/hammer.png');
-	g.add('img/rooms/housing_white.png');
-	g.add('img/rooms/meat_white.png');
-	g.add('img/rooms/gold_white.png');
-	g.add('img/rooms/axe_white.png');
-	g.add('img/rooms/defence_white.png');
+	g.add('img/UI.png');
+//	g.add('img/hud/hammer.png');
+	for (var room in rooms) {
+		g.add(rooms[room].pic);
+	}
 	s.add('snd/drums.ogg');
 
 	function BuildMenu(parent) {
-		this.b_size = 128;
-		this.b_spacing = 10;
+		this.b_size = 90;
+		this.b_top = 59;
+		this.b_left = 56
+		this.b_spacing = 38;
 		this.b_colors = new Colors('#3c3c3c', '#3c3c3c', '#9c9c9c', '#9c9c9c');
 
-		var room_definitions = [ { src: 'img/rooms/housing_white.png', def: null },
-		                         { src: 'img/rooms/meat_white.png',    def: null },
-		                         { src: 'img/rooms/gold_white.png',    def: null },
-		                         { src: 'img/rooms/axe_white.png',     def: null },
-		                         { src: 'img/rooms/defence_white.png', def: null } ];
-
-		var my_width = (this.b_size + this.b_spacing) * (room_definitions.length + 1);
+		var my_width = 935;
+		var my_height = 179;
 		var my_x = parent.size.x / 2 - my_width / 2;
 
-		Entity.call(this, new V2(my_x, parent.size.y), new V2(my_width, this.b_size));
+		Entity.call(this, new V2(my_x, parent.size.y), new V2(my_width, my_height));
 		this.clickable = false;
 
 		// background
-		this.add( new RectEntity(Zero(), this.size, new Colors('#5c5c5c', '#5c5c5c')) );
+		this.add( new ImageEntity(Zero(), 'img/UI.png') );
 		// icon
-		this.add( new ImageEntity(Zero(), 'img/hud/hammer.png') );
+		//this.add( new ImageEntity(Zero(), 'img/hud/hammer.png') );
 
 		var self = this;
-		for (var i = 0; i < room_definitions.length; i++)
-		{
-			var room = room_definitions[i];
-			var button = Button.create(new V2(this.b_size * (i+1) + this.b_spacing * (i+1), 0), function() {
-				self.roomClicked();
-			});
-			button.rect(this.b_size, this.b_size, this.b_colors);
-			button.img(room.src);
-			this.add(button);
-		}
+		var i = 0;
+		for (var room in rooms)
+			(function(room) {
+				var room_def = rooms[room];
+				if (room_def.nobuild) return;
+				var button_x = self.b_left + (self.b_size + self.b_spacing) * i;
+				var button = Button.create(new V2(button_x, self.b_top), function() {
+					self.roomClicked(room);
+				});
+				button.img(room_def.pic);
+				self.add(button);
+				i++;
+			})(room);
 
 		// building tooltip
 		this.tooltip = new Tooltip(parent, new Colors('#9c9c9c', '#9c9c9c'), this);
@@ -50,14 +49,14 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	BuildMenu.prototype = new Entity();
 
 	BuildMenu.prototype.init = function() {
-		this.add(new Morph( { position: { y: this.parent.size.y - this.b_size } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
+		this.add(new Morph( { position: { y: this.parent.size.y - this.size.y } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
 		s.play('snd/drums.ogg');
 	};
 
 	BuildMenu.prototype.roomClicked = function(room) {
 		if (!this.clickable) return;
 
-		this.clickedRoom = { name: 'Testraum', desc: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore' };
+		this.clickedRoom = rooms[room];
 		this.add( new Morph( { position: { y: this.parent.size.y } }, 500, Easing.INOUTCUBIC, this.moveOutFinished ) );
 		this.clickable = false;
 	};

@@ -5,6 +5,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 				this.money = 500;
 				this.housings = 10;
+				this.orcs = 3;
 
 				var map = new Map();
 

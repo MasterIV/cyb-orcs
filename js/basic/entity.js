@@ -66,6 +66,12 @@ define(['geo/v2', 'geo/rect', 'core/mouse'], function(V2, Rect, mouse) {
 				list[i][event](argurment);
 	};
 
+	Entity.prototype.dispatchReverse = function (list, event, argurment) {
+		for (var i = list.length-1; i >= 0; i--)
+			if (list[i][event])
+				if( list[i][event](argurment)) return true;
+	};
+
 	Entity.prototype.update = function (delta) {
 		if (this.onUpdate)
 			this.onUpdate(delta);
@@ -104,36 +110,36 @@ define(['geo/v2', 'geo/rect', 'core/mouse'], function(V2, Rect, mouse) {
 	Entity.prototype.click = function (pos) {
 		pos = pos.dif(this.position);
 		if (!this.getArea().inside(pos)) return;
-		if (this.onClick) this.onClick(pos);
+		if (this.onClick && this.onClick(pos)) return true;
 
 		if (this.blocking.length) {
-			this.dispatch(this.blocking, 'click', pos);
+			return this.dispatchReverse(this.blocking, 'click', pos);
 		} else {
-			this.dispatch(this.entities, 'click', pos);
+			return this.dispatchReverse(this.entities, 'click', pos);
 		}
 	};
 
 	Entity.prototype.mousedown = function (pos) {
 		pos = pos.dif(this.position);
 		if (!this.getArea().inside(pos)) return;
-		if (this.onMouseDown) this.onMouseDown(pos);
+		if (this.onMouseDown && this.onMouseDown(pos)) return true;
 
 		if (this.blocking.length) {
-			this.dispatch(this.blocking, 'mousedown', pos);
+			return this.dispatchReverse(this.blocking, 'mousedown', pos);
 		} else {
-			this.dispatch(this.entities, 'mousedown', pos);
+			return this.dispatchReverse(this.entities, 'mousedown', pos);
 		}
 	};
 
 	Entity.prototype.mouseup = function (pos) {
 		pos = pos.dif(this.position);
 		if (!this.getArea().inside(pos)) return;
-		if (this.onMouseUp) this.onMouseUp(pos);
+		if (this.onMouseUp && this.onMouseUp(pos)) return true;
 
 		if (this.blocking.length) {
-			this.dispatch(this.blocking, 'mouseup', pos);
+			return this.dispatchReverse(this.blocking, 'mouseup', pos);
 		} else {
-			this.dispatch(this.entities, 'mouseup', pos);
+			return this.dispatchReverse(this.entities, 'mouseup', pos);
 		}
 	};
 

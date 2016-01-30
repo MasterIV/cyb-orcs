@@ -8,13 +8,13 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 	function Creature(pos, map, type) {
 		Entity.call(this, new V2(ts.x * pos.x, ts.y * pos.y), new V2(ts.x, ts.y));
 
-		this.img = new Animation( 'img/orc_spritesheet.png', Zero(), new V2(4,4), 200, true );
+		this.img = new Animation( 'img/orc_spritesheet.png', new V2(0,0), new V2(4,4), 200, true );
 		this.add(this.img);
 
 		this.dest = null;
 		this.mapPos = pos;
 		this.movement = null;
-		this.speed = 200;
+		this.speed = 160;
 
 		this.map = map;
 
@@ -39,7 +39,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 				this.mapPos.x = Math.round(this.position.x / ts.x);
 				this.mapPos.y = Math.round(this.position.y / ts.y);
 				this.position.x = this.mapPos.x*ts.x;
-				this.position.y = this.mapPos.x*ts.y;
+				this.position.y = this.mapPos.y*ts.y;
 				this.movement = null;
 			}
 		} else if(this.dest) {
@@ -48,9 +48,9 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 			} else {
 				var next = this.map.get(this.mapPos.x, this.mapPos.y).findPath(this.mapPos, this.dest);
 				if( next ) {
-					this.movement = this.mapPos.dif(next).prd(this.speed);
-					if( this.movement.x < 0 ) this.img.state = 1;
-					if( this.movement.x > 0 ) this.img.state = 2;
+					this.movement = next.dif(this.mapPos).prd(this.speed);
+					if( this.movement.x < 0 ) this.img.state = 2;
+					if( this.movement.x > 0 ) this.img.state = 1;
 					if( this.movement.y < 0 ) this.img.state = 3;
 					if( this.movement.y > 0 ) this.img.state = 0;
 				}
@@ -59,12 +59,12 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 	};
 
 	Creature.prototype.walk = function(dest) {
-		//console.log()
+		console.log(dest);
 
 		var target = this.map.get(dest.x, dest.y);
 		if(target == null || typeof(target) != "object") return;
 		var current = this.map.get(this.mapPos.x, this.mapPos.y);
-		if(!current.lookup[target.id]) return;
+		if(!current.lookup[target.id] && current.id != target.id) return;
 		this.dest = dest;
 	};
 

@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature'],
-		function(Scene, ViewPort, V2, Map, HUD, Button, Creature ) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor'],
+		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor) {
 			function PlayScene() {
 				Scene.call(this);
 
@@ -7,12 +7,12 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.housings = 10;
 
 				var map = new Map();
+				var cursor = new Cursor(map);
 
-				map.selectRoom(shapes[13]);
-				map.addRoom(new V2(9,9));
+				map.addRoom(new V2(9,9), cursor.selectRoom(shapes[13]), cursor.shape);
 
 				var add = new Button(new V2(20, 20), function() {
-					map.selectRoom(shapes[Math.floor(Math.random()*shapes.length)], null);
+					cursor.selectRoom(shapes[Math.floor(Math.random()*shapes.length)], null);
 				});
 
 				add.rect(50, 50);
@@ -24,6 +24,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				viewport.add(new Creature(new V2(10,9), map, null));
 				viewport.add(new Creature(new V2(9,9), map, null));
 				viewport.add(new Creature(new V2(10,10), map, null));
+				viewport.add(cursor);
 
 				viewport.dragable(true);
 

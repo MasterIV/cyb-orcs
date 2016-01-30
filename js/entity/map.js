@@ -33,7 +33,9 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 	};
 
 	Map.prototype.selectUnit = function (unit) {
+		if (this.unit) this.unit.deselected();
 		this.unit = unit;
+		this.unit.selected();
 	};
 
 	Map.prototype.get = function (x, y) {

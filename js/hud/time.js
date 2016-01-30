@@ -1,5 +1,5 @@
-define(['basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'definition/easing', 'geo/v2', 'geo/rect'],
-	function(Entity, ImageEntity, Morph, g, Easing, V2, Rect) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'definition/easing', 'geo/v2', 'geo/rect'],
+	function(Button, Entity, ImageEntity, Morph, g, Easing, V2, Rect) {
 
 	g.add('img/top_UI_sun.png');
 	g.add('img/top_UI_sun_bar.png');
@@ -16,6 +16,7 @@ define(['basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'definitio
 
 		this.time = 0;
 		this.day_length = 60000;
+		this.paused = false;
 	}
 
 	Time.prototype = new Entity();
@@ -25,11 +26,22 @@ define(['basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'definitio
 	};
 
 	Time.prototype.onUpdate = function(delta) {
+		if (this.paused) return;
+
 		this.time += delta;
 		if (this.time > this.day_length)
 			this.time -= this.day_length;
 		var new_progress = (this.time / this.day_length) * 336;
 		this.progress.size.x = new_progress;
+	};
+
+	Time.prototype.onClick = function() {
+		this.paused = this.parent.parent.togglePause();
+		return true;
+	};
+
+	Time.prototype.onMouseDown = function() {
+		return true;
 	};
 
 	return Time;

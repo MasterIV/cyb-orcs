@@ -11,7 +11,8 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 
 		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,6), 200, true );
 		this.add(this.img);
-		this.cursor = new Image(new V2(42,-10), 'img/select_arrow.png', .5);
+		this.cursor = new Image(new V2(42,-20), 'img/select_arrow.png', .5);
+		this.cursor.visible = false;
 		this.add(this.cursor);
 
 		this.dest = null;
@@ -48,9 +49,18 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		return true;
 	};
 
-	Creature.prototype.onUpdate = function(delta) {
-		this.cursor.visible = this.map.unit == this;
+	Creature.prototype.selected = function() {
+		this.cursor.visible = true;
 		this.cursor.position.y = this.img.frame*2-10;
+	};
+
+	Creature.prototype.deselected = function() {
+		this.cursor.visible = false;
+	};
+
+	Creature.prototype.onUpdate = function(delta) {
+		if ( this.cursor.visible )
+			this.cursor.position.y = this.img.frame*2-10;
 
 		if(this.movement) {
 			// walk to next tile

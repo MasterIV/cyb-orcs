@@ -1,4 +1,4 @@
-define(['scenes/menu', 'scenes/credits', 'scenes/play', 'scenes/help', 'scenes/hud'],
+define(['scenes/menu', 'scenes/credits', 'scenes/play', 'scenes/help'],
 		function (MenuScene, CreditsScene, PlayScene, HelpScene, HUDScene) {
 			return {
 				init: function () {

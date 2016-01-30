@@ -23,6 +23,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		else Entity.call(this, new V2((p2.x-.5)*ts.x, p2.y*ts.y ), new V2(ts.x, ts.y));
 
 		this.open = false;
+		this.cooldown = 0;
 		this.direction = p1.y == p2.y;
 
 		this.points = {};
@@ -34,8 +35,20 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 	Door.prototype.onDraw = function(ctx) {
 		ctx.drawImage(graphic['img/doors.png'],
-			0, ts.y*this.direction, ts.x, ts.y,
+			ts.x*this.open, ts.y*this.direction, ts.x, ts.y,
 			0, 0, ts.x, ts.y);
+	};
+
+	Door.prototype.toggle = function() {
+		this.open = true;
+		this.cooldown = 600;
+	};
+
+	Door.prototype.onUpdate = function(delta) {
+		if(this.open) {
+			this.cooldown -= delta;
+			this.open = this.cooldown > 0;
+		}
 	};
 
 	function Room(pos, shape, definition, scene) {
@@ -85,8 +98,6 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			this.add(new Moneymation(costs, this.shape, false));
 			scene.money -= costs;
 		}
-
-		console.log(this);
 	}
 
 	Room.prototype = new Entity();
@@ -183,6 +194,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			var door = this.lookup[destRoom.id].door;
 			var entrance = door.points[this.id];
 			if(from.equal(entrance)) {
+				door.toggle();
 				for(var i in door.points)
 					if(i != this.id)
 						return door.points[i];

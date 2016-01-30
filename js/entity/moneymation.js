@@ -25,7 +25,6 @@ define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 		var yPosition = this.shape.iconPos().y + (this.animationWay * 2) * -1;
 
 		if (this.cost > 0 && this.moreMoney){
-			console.log(this.shape.iconPos());
 			ctx.font = "14px arial";
 			ctx.fillStyle = "white";
 			ctx.fillText("+"+this.cost, xPosition + 70, yPosition + 15 );

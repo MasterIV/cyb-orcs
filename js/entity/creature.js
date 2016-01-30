@@ -27,7 +27,6 @@ define(['basic/entity', 'config/config', 'core/graphic'], function (Entity, conf
                 if (this.tiles[x][y]) {
                     this.randomPos.x = x;
                     this.randomPos.y = y;
-                    console.log(this.entities);
                 }
             }
         }

@@ -5,15 +5,16 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	g.add('img/cancel.png');
 
 	function Tooltip(parent, colors, buildmenu) {
-		var width = 515;
+		var width = 849;
 		var height = 167;
-		var close_b_size = 32;
+		var close_b_size = 64;
 
 		Entity.call(this, new V2(parent.size.x / 2 - width / 2, parent.size.y), new V2(width, height));
 
 		this.extra_sp = 10;
 		this.line_sp = 10;
-		this.margin = 5;
+		this.margin = 10;
+		this.line_length = 90;
 
 		var y = this.margin * 2;
 		this.title = new TextEntity(new V2( this.margin, y ), '', font.large);
@@ -25,10 +26,10 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		this.text3 = new TextEntity(new V2( this.margin, y ), '', font.default);
 
 		var self = this;
-		var close = Button.create(new V2(this.size.x - close_b_size, 0), function() {
+		var close = Button.create(new V2(this.size.x - close_b_size - this.margin, this.margin), function() {
 			self.close();
 		});
-		close.rect(close_b_size, close_b_size, new Colors('#9c9c9c', '#9c9c9c', '#5c5c5c', '#5c5c5c'));
+		//close.rect(close_b_size, close_b_size, new Colors(null, null, '#5c5c5c', '#5c5c5c'));
 		close.img('img/cancel.png');
 
 		this.add( new ImageEntity(Zero(), 'img/UI_tooltip.png') );
@@ -47,22 +48,22 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	Tooltip.prototype.moveIn = function(room) {
 		this.add( new Morph( { position: { y: this.parent.size.y - this.size.y } }, 500, Easing.INOUTCUBIC, this.moveInFinished ) );
 		this.title.text = room.name;
-		if (room.desc.length > 100) {
-			for (var i = 0; i < 100; i++) {
-				if (room.desc.charAt(100 - i) == ' ')
+		if (room.desc.length > this.line_length) {
+			for (var i = 0; i < this.line_length; i++) {
+				if (room.desc.charAt(this.line_length - i) == ' ')
 					break;
 			}
-			if (room.desc.length > 200) {
-				for (var j = 0; j < 200; j++) {
-					if (room.desc.charAt(200 - j) == ' ')
+			if (room.desc.length > this.line_length * 2) {
+				for (var j = 0; j < this.line_length * 2; j++) {
+					if (room.desc.charAt(this.line_length * 2 - j) == ' ')
 						break;
 				}
-				this.text.text  = room.desc.substr(0, 100 - i);
-				this.text2.text = room.desc.substr(101 - i, 100-j);
-				this.text3.text = room.desc.substr(201 - j, room.desc.length);
+				this.text.text  = room.desc.substr(0, this.line_length - i);
+				this.text2.text = room.desc.substr(this.line_length + 1 - i, this.line_length - j);
+				this.text3.text = room.desc.substr(this.line_length * 2 + 1 - j, room.desc.length);
 			} else {
-				this.text.text  = room.desc.substr(0, 100 - i);
-				this.text2.text = room.desc.substr(101 - i, room.desc.length);
+				this.text.text  = room.desc.substr(0, this.line_length - i);
+				this.text2.text = room.desc.substr(this.line_length + 1 - i, room.desc.length);
 			}
 		} else {
 			this.text.text = room.desc;
@@ -73,10 +74,14 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		self.clickable = true;
 	};
 
+	Tooltip.prototype.canClose = function() {
+		return this.clickable;
+	}
+
 	Tooltip.prototype.close = function() {
-		if (!this.clickable) return;
 		this.clickable = false;
 
+		this.buildmenu.abortBuild();
 		this.add( new Morph( { position: { y: this.parent.size.y } }, 500, Easing.INOUTCUBIC, this.moveOutFinished ) );
 	};
 

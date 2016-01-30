@@ -2,7 +2,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip) {
 
 	g.add('img/UI.png');
-//	g.add('img/hud/hammer.png');
 	for (var room in rooms) {
 		g.add(rooms[room].pic);
 	}
@@ -95,10 +94,19 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		this.cursor.selectRoom(this.layout.shape, rooms[room]);
 	};
 
+	BuildMenu.prototype.allowBuild = function() {
+		if(!this.tooltip.canClose()) return false;
+		return true;
+	};
+
 	BuildMenu.prototype.built = function() {
-		this.tooltip.close();
+		this.tooltip.close()
 		this.layout = new Layout(this.getRandomShape());
 		s.play('snd/room.ogg');
+	};
+
+	BuildMenu.prototype.abortBuild = function() {
+		this.cursor.deselectRoom();
 	};
 
 	BuildMenu.prototype.getRandomShape = function() {

@@ -31,9 +31,10 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 			});
 
 			if (!possible) return true;
+			if (!this.build_menu.allowBuild()) return true;
 			this.map.addRoom(p, this.layout, this.type);
 			this.layout = null;
-			this.build_menu.built();
+			this.build_menu.built()
 			return true;
 		}
 	};
@@ -46,6 +47,11 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		this.layout = new Layout(layout);
 		this.type = type;
 		return this.layout;
+	};
+
+	Cursor.prototype.deselectRoom = function () {
+		this.layout = null;
+		this.type = null;
 	};
 
 	return Cursor;

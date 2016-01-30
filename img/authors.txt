@@ -1,14 +1,14 @@
-hud/hammer.png
-	CC BY 3.0 by Lorc (http://game-icons.net/lorc/originals/claw-hammer.html)
+cancel.png
+	CC-BY 3.0 by Lorc (http://game-icons.net/lorc/originals/cross-mark.html)
 rooms/meat_*.png
-	CC BY 3.0 by Lorc (http://game-icons.net/lorc/originals/meat.html)
+	CC-BY 3.0 by Lorc (http://game-icons.net/lorc/originals/meat.html)
 rooms/axe_*.png
-	CC BY 3.0 by Lorc (http://game-icons.net/lorc/originals/battle-axe.html)
+	CC-BY 3.0 by Lorc (http://game-icons.net/lorc/originals/battle-axe.html)
 rooms/base_*.png
-	CC BY 3.0 by Lorc (http://game-icons.net/lorc/originals/heart-tower.html)
+	CC-BY 3.0 by Lorc (http://game-icons.net/lorc/originals/heart-tower.html)
 rooms/defence_*.png
-	CC BY 3.0 by Lorc (http://game-icons.net/lorc/originals/disintegrate.html)
+	CC-BY 3.0 by Lorc (http://game-icons.net/lorc/originals/disintegrate.html)
 rooms/gold_*.png
-	CC BY 3.0 by Delapouite (http://game-icons.net/lorc/originals/gold-mine.html)
+	CC-BY 3.0 by Delapouite (http://game-icons.net/lorc/originals/gold-mine.html)
 rooms/housing_*.png
-	CC BY 3.0 by Delapouite (http://game-icons.net/lorc/originals/pillow.html)
+	CC-BY 3.0 by Delapouite (http://game-icons.net/lorc/originals/pillow.html)

@@ -15,7 +15,6 @@ define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 			this.animationWay += 1.5;
 		} else {
 			this.parent.remove(this);
-
 		}
 	};
 

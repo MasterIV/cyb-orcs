@@ -3,6 +3,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 	g.add('img/top_UI_sun.png');
 	g.add('img/top_UI_sun_bar.png');
+	g.add('img/time_freeze.png');
 	s.add('snd/pause.ogg');
 
 	function Time(parent) {
@@ -14,6 +15,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.progress = new ImageEntity(new V2(69, 24), 'img/top_UI_sun_bar.png');
 		this.add(this.progress);
 		this.progress.size.x = 1;
+		// time freeze
+		this.freeze = new ImageEntity(Zero(), 'img/time_freeze.png');
 
 		this.time = 0;
 		this.day_length = 60000;
@@ -38,7 +41,11 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 	Time.prototype.onClick = function() {
 		this.paused = this.parent.parent.togglePause();
-		if (this.paused) s.play('snd/pause.ogg');
+		if (this.paused) {
+			this.add(this.freeze);
+			s.play('snd/pause.ogg');
+		} else
+			this.remove(this.freeze);
 		return true;
 	};
 

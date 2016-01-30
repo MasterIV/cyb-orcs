@@ -5,7 +5,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	for (var room in rooms) {
 		g.add(rooms[room].pic);
 	}
-	s.add('snd/drums.ogg');
 	s.add('snd/room.ogg');
 
 	function BuildMenu(parent, cursor) {
@@ -54,7 +53,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 
 	BuildMenu.prototype.init = function() {
 		this.add(new Morph( { position: { y: this.parent.size.y - this.size.y } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
-		s.play('snd/drums.ogg');
 	};
 
 	BuildMenu.prototype.draw = function(ctx) {

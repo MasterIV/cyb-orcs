@@ -13,7 +13,6 @@ define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/b
 
 				var add = new Button(new V2(20, 20), function() {
 					map.selectRoom(shapes[Math.floor(Math.random()*shapes.length)], null);
-					return true;
 				});
 
 				add.rect(50, 50);

@@ -2,7 +2,10 @@ define(['basic/entity', 'geo/v2', 'basic/text', 'basic/rect', 'basic/image'],
 		function(Entity, V2, TextEntity, RectEntity, ImageEntity) {
 			function Button(pos, callback) {
 				Entity.call(this, pos);
-				this.onClick = callback;
+				this.onClick = function(p) {
+					callback(p);
+					return true;
+				}
 			}
 
 			Button.prototype = new Entity();

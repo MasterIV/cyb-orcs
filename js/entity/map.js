@@ -1,5 +1,7 @@
-define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'], function (Entity, V2, Room, config, graphic) {
+define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'], function (Entity, ImageEntity, V2, Room, config, graphic) {
 	graphic.add('img/tiles_background.png');
+	graphic.add('img/select_arrow.png');
+
 	var size = config.size;
 	var probability = .1;
 
@@ -24,12 +26,32 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 					size.tile.x * x, size.tile.y * y, size.tile.x, size.tile.y);
 			}
 		}
+
+		this.target_icon = new ImageEntity(Zero(), 'img/select_arrow.png');
+		this.target_dest = null;
 	}
 
 	Map.prototype = new Entity();
 
 	Map.prototype.onDraw = function (ctx) {
 		ctx.drawImage(this.canvas, 0, 0);
+
+		if (!this.target_dest && this.unit) {
+			if (this.unit.dest) {
+				this.target_dest = new V2(this.unit.dest.x, this.unit.dest.y);
+				this.target_icon.position.x = this.target_dest.x * size.tile.x + 23;
+				this.target_icon.position.y = this.target_dest.y * size.tile.y;
+				this.add(this.target_icon);
+			}
+		} else if (this.unit && !this.unit.dest && this.target_dest) {
+			this.target_dest = null;
+			this.remove(this.target_icon);
+		} else if (this.unit && this.unit.dest && !this.unit.dest.equal(this.target_dest)) {
+			this.target_dest.x = this.unit.dest.x;
+			this.target_dest.y = this.unit.dest.y;
+			this.target_icon.position.x = this.target_dest.x * size.tile.x + 23;
+			this.target_icon.position.y = this.target_dest.y * size.tile.y;
+		}
 	};
 
 	Map.prototype.selectUnit = function (unit) {

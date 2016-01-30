@@ -7,7 +7,7 @@ var skills = {
 };
 
 function getEp(level) {
-	return ((level-1)*(level-1)+level-1)*30;
+	return (level*level-level)*30;
 }
 
 function getLevel(xp) {

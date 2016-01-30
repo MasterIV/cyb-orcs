@@ -1,4 +1,5 @@
-define(['basic/entity', 'geo/v2', 'entity/room', 'config/config'], function(Entity, V2, Room, config) {
+define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'], function(Entity, V2, Room, config, graphic) {
+	graphic.add('img/tiles_background.png');
 	var size = config.size;
 	var probability = .1;
 
@@ -49,7 +50,6 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config'], function(Enti
 		this.canvas.width = this.size.x;
 		this.canvas.height = this.size.y;
 		this.ctx = this.canvas.getContext("2d");
-		this.ctx.fillStyle = '#9E6B55';
 
 		this.tiles = [];
 		for(var x = 0; x < size.map.x; x++) {
@@ -57,18 +57,19 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config'], function(Enti
 
 			for(var y = 0; y < size.map.y; y++) {
 				this.tiles[x][y] = Math.random() < probability ? 1 : null;
-				if(this.tiles[x][y])
-					this.ctx.fillRect(x*size.tile.x, y*size.tile.y, size.tile.x, size.tile.y);
+				this.ctx.drawImage(graphic['img/tiles_background.png'],
+					size.tile.x*Math.floor(Math.random()*5), size.tile.y*Number(this.tiles[x][y]), size.tile.x, size.tile.y,
+					size.tile.x*x, size.tile.y*y, size.tile.x, size.tile.y);
 			}
 		}
 
 		this.selectRoom(shapes[10], null);
 
 		// debug grid
-		for(var x = 0; x < size.map.x; x++)
-			this.ctx.fillRect(x*size.tile.x, 0, 1, size.map.y*size.tile.y);
-		for(var y = 0; y < size.map.y; y++)
-			this.ctx.fillRect(0, y*size.tile.y, size.map.x*size.tile.x, 1);
+		//for(var x = 0; x < size.map.x; x++)
+		//	this.ctx.fillRect(x*size.tile.x, 0, 1, size.map.y*size.tile.y);
+		//for(var y = 0; y < size.map.y; y++)
+		//	this.ctx.fillRect(0, y*size.tile.y, size.map.x*size.tile.x, 1);
 	}
 
 	Map.prototype = new Entity();

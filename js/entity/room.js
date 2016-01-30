@@ -1,13 +1,16 @@
 define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Entity, V2, config, graphic) {
 	graphic.add('img/tiles_spritesheet.png');
+	graphic.add('img/doors.png');
 	var ts = config.size.tile;
 	var roomId = 1;
 
 	function Door(p1, p2, map) {
-		if(p1.x == p2.x) Entity.call(this, new V2(p2.x*ts.x+8, p2.y*ts.y-4 ), new V2(ts.x-16, 8));
-		else Entity.call(this, new V2(p2.x*ts.x-4, p2.y*ts.y+8 ), new V2(8, ts.y-16));
+		if(p1.x == p2.x) Entity.call(this, new V2(p2.x*ts.x, (p2.y-.5)*ts.y ), new V2(ts.x, ts.y));
+		else Entity.call(this, new V2((p2.x-.5)*ts.x, p2.y*ts.y ), new V2(ts.x, ts.y));
 
 		this.open = false;
+		this.direction = p1.y == p2.y;
+
 		this.points = {};
 		this.points[map.get(p1.x, p1.y).id] = p1;
 		this.points[map.get(p2.x, p2.y).id] = p2;
@@ -16,8 +19,9 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Ent
 	Door.prototype = new Entity();
 
 	Door.prototype.onDraw = function(ctx) {
-		ctx.fillStyle = this.open ? 'red' : '#995555';
-		ctx.fillRect(0, 0, this.size.x, this.size.y );
+		ctx.drawImage(graphic['img/doors.png'],
+			0, ts.y*this.direction, ts.x, ts.y,
+			0, 0, ts.x, ts.y);
 	};
 
 	function Room(pos, shape, definition) {

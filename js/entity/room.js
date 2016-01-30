@@ -126,7 +126,8 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		}
 
 		if(this.ranged) {
-			//
+			this.progress += creature.skills.ranged;
+			creature.train('ranged');
 		}
 
 		if(this.train) {
@@ -139,17 +140,45 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 	Room.prototype.onUpdate = function(delta) {
 		if(this.overlay) this.overlay.alpha = 1-(this.hp/this.maxHp);
-		if(this.hp > 0 && this.gold) {
+		if(this.hp > 0 && (this.gold || this.ranged)) {
 			this.delta += delta;
 
 			if(this.delta >= this.cooldown) {
 				this.delta -= this.cooldown;
-				var additionalMoney = (this.progress*this.gold*1000/this.cooldown)|0;
-				this.scene.money += additionalMoney;
-				this.add(new Moneymation(additionalMoney, this.shape, true));
+
+				if( this.gold ) {
+					var additionalMoney = (this.progress * this.gold * 1000 / this.cooldown) | 0;
+					this.scene.money += additionalMoney;
+					this.add(new Moneymation(additionalMoney, this.shape, true));
+				}
+
+				if( this.ranged ) {
+					var damage = (this.progress * this.ranged * 1000 / this.cooldown) | 0;
+					var target = this.findCreatureTarget();
+					if( target ) target.harm(damage);
+				}
+
 				this.progress = 0;
 			}
 		}
+	};
+
+	Room.prototype.findCreatureTarget = function() {
+		var closest = null;
+		var dist = null;
+
+		for(var i in this.scene.viewport.entities) {
+			var e = this.scene.viewport.entities[i];
+			if(e.enemy) {
+				var d = e.position.dist(this.position);
+				if( dist == null || d < dist ) {
+					dist = d;
+					closest = e;
+				}
+			}
+		}
+
+		return closest;
 	};
 
 	Room.prototype.addDoor = function(r, p1, p2) {

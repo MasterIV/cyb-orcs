@@ -29,7 +29,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 				this.add( new HUD(this.size, cursor) );
 				this.add(Button.create(new V2(20, 200), function() {
-					self.viewport.add(new Creature(new V2(10,10), map, 50, true));
+					self.viewport.add(new Creature(new V2(10,10), map, 10, true));
 				}).rect(50,50));
 				this.paused = false;
 			}

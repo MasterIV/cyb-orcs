@@ -124,7 +124,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 
 					if(enemy) {
 						enemy.harm(this.skills.attack);
-						this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(-25,-25)), new V2(5, 1), 200));
+						this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(0,0)), new V2(5, 1), 200));
 						this.train('attack');
 						this.train('hp');
 						return;
@@ -133,7 +133,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 					if( this.enemy ) {
 						if (room.hp > 1) {
 							room.harm(this.skills.attack);
-							this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(-25,-25)), new V2(5, 1), 200));
+							this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(0,0)), new V2(5, 1), 200));
 						}
 
 						if (room.hp < 1) {
@@ -155,7 +155,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 				var e = this.parent.entities[i];
 				if(e instanceof Creature && this.enemy != e.enemy) {
 					var r = this.map.get(e.mapPos.x, e.mapPos.y);
-					var d = e.position.dist;
+					var d = e.position.dist(this.position);
 					if( r == room && (dist == null || d < dist )) {
 						dist = d;
 						closest = e;

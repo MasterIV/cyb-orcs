@@ -49,7 +49,8 @@ var rooms = {
 		cost: 40,
 		hp: 80,
 		pic: 'img/rooms/defence_white.png',
-		cooldown: 3000
+		cooldown: 3000,
+		ranged: 1
 	}
 };
 

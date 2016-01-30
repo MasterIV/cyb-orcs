@@ -74,6 +74,13 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 		}
 	};
 
+	Map.prototype.each = function (callback) {
+		for (var x = 0; x < size.map.x; x++)
+			for (var y = 0; y < size.map.y; y++)
+				if(this.tiles[x][y] != null && typeof(this.tiles[x][y]) == "object")
+					callback(this.tiles[x][y], new V2(x, y));
+	};
+
 	Map.prototype.addRoom = function (pos, layout, type) {
 		var self = this;
 		var room = new Room(new V2(pos.x * size.tile.x, pos.y * size.tile.y), layout, type, this.scene);

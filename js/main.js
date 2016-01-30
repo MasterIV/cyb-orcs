@@ -1,3 +1,5 @@
+var global_game;
+
 define(
 	['config/scenes', 'config/config', 'core/graphic', 'core/mouse', 'core/controls', 'core/sound', 'core/game'],
 	function (scenes, config, graphics, mouse, controls, sound, game) {
@@ -17,6 +19,7 @@ define(
 			}
 
 			game.init(scene);
+			global_game = game;
 		});
 	}
 );

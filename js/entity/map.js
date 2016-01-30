@@ -19,50 +19,50 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 			});
 		};
 	}
-
-	function Path() {
-		this.nodes = [];
-		this.position = Zero();
-
-		this.setParent = function(p) {
-			this.parent = p;
-		};
-
-		this.draw = function(ctx) {
-			if(this.nodes.length) {
-				ctx.strokeStyle = 'red';
-				ctx.lineWidth = 5;
-
-				ctx.beginPath();
-				ctx.moveTo(9.5*size.tile.x, 9.5*size.tile.x);
-
-				for(var i in this.nodes) {
-					var n = this.nodes[i].sum(new V2(.5,.5));
-					ctx.lineTo(n.x * size.tile.x, n.y * size.tile.x);
-				}
-
-				ctx.stroke();
-			}
-		};
-
-		this.getPath = function(dest) {
-			var target = this.parent.get(dest.x, dest.y);
-			if( target == null || typeof(target) != "object" ) return;
-
-			this.nodes = [];
-			var current = new V2(9,9);
-			var room;
-
-			while(current && !current.equal(dest)) {
-				room = this.parent.get(current.x, current.y);
-				if(!room.lookup[target.id] && room.id != target.id) return;
-				current = room.findPath(current, dest);
-				this.nodes.push(current);
-			}
-		}
-	}
-
-	var path = new Path();
+	//
+	//function Path() {
+	//	this.nodes = [];
+	//	this.position = Zero();
+	//
+	//	this.setParent = function(p) {
+	//		this.parent = p;
+	//	};
+	//
+	//	this.draw = function(ctx) {
+	//		if(this.nodes.length) {
+	//			ctx.strokeStyle = 'red';
+	//			ctx.lineWidth = 5;
+	//
+	//			ctx.beginPath();
+	//			ctx.moveTo(9.5*size.tile.x, 9.5*size.tile.x);
+	//
+	//			for(var i in this.nodes) {
+	//				var n = this.nodes[i].sum(new V2(.5,.5));
+	//				ctx.lineTo(n.x * size.tile.x, n.y * size.tile.x);
+	//			}
+	//
+	//			ctx.stroke();
+	//		}
+	//	};
+	//
+	//	this.getPath = function(dest) {
+	//		var target = this.parent.get(dest.x, dest.y);
+	//		if( target == null || typeof(target) != "object" ) return;
+	//
+	//		this.nodes = [];
+	//		var current = new V2(9,9);
+	//		var room;
+	//
+	//		while(current && !current.equal(dest)) {
+	//			room = this.parent.get(current.x, current.y);
+	//			if(!room.lookup[target.id] && room.id != target.id) return;
+	//			current = room.findPath(current, dest);
+	//			this.nodes.push(current);
+	//		}
+	//	}
+	//}
+	//
+	//var path = new Path();
 
 	function getPos(pos) {
 		var x = Math.floor( pos.x/size.tile.x);
@@ -89,7 +89,6 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 	function Map() {
 		Entity.call(this, Zero(), new V2(size.map.x*size.tile.x, size.map.y*size.tile.y));
 		this.add(new Cursor());
-		this.add(path);
 
 		this.canvas = document.createElement('canvas');
 		this.canvas.width = this.size.x;
@@ -120,6 +119,10 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 		ctx.drawImage(this.canvas, 0, 0);
 	};
 
+	Map.prototype.selectUnit = function(unit) {
+		this.unit = unit;
+	};
+
 	Map.prototype.get = function(x,y) {
 		if( x < 0 || y < 0 || x >= size.map.x || y >= size.map.y)
 			return 1;
@@ -130,7 +133,7 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 		var p = getPos(pos);
 
 		if( !this.layout ) {
-			path.getPath(p);
+			if( this.unit ) this.unit.walk(p);
 			return;
 		}
 

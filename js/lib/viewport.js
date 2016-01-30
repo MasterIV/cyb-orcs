@@ -66,8 +66,8 @@ define(['basic/entity', 'geo/v2', 'geo/rect', 'basic/morph'], function(Entity, V
 	};
 
 	ViewPort.prototype.click = function(pos) {
-		var dif = this.dragStart.dif(this.position);
-		if(this.dragging == null || (Math.abs(dif.x)<2 && Math.abs(dif.y)<2))
+		var dif = this.dragStart ? this.dragStart.dif(this.position) : new V2(0,0);
+		if (this.dragging == null || (Math.abs(dif.x) < 2 && Math.abs(dif.y) < 2))
 			Entity.prototype.click.call(this, pos);
 	};
 

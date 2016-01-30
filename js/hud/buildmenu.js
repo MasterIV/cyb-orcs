@@ -24,9 +24,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		var my_x = parent.size.x / 2 - my_width / 2;
 
 		Entity.call(this, new V2(my_x, parent.size.y), new V2(my_width, this.b_size));
-		this.add(new Morph( { position: { y: parent.size.y - this.b_size } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
 		this.clickable = false;
-		s.play('snd/drums.ogg');
 
 		// background
 		this.add( new RectEntity(Zero(), this.size, new Colors('#5c5c5c', '#5c5c5c')) );
@@ -49,6 +47,11 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	}
 
 	BuildMenu.prototype = new Entity();
+
+	BuildMenu.prototype.init = function() {
+		this.add(new Morph( { position: { y: this.parent.size.y - this.b_size } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
+		s.play('snd/drums.ogg');
+	};
 
 	BuildMenu.prototype.roomClicked = function(room) {
 		if (!this.clickable) return;

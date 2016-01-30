@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/button'],
-		function(Scene, ViewPort, V2, Map, Button ) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button'],
+		function(Scene, ViewPort, V2, Map, HUD, Button ) {
 			function PlayScene() {
 				Scene.call(this);
 
@@ -24,6 +24,8 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/button'],
 				this.add(viewport);
 				this.add(add);
 				viewport.centerSelf();
+
+				this.add( new HUD(this.size) );
 			}
 
 			PlayScene.prototype = new Scene();

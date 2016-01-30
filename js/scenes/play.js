@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/button'],
-		function(Scene, TiledMap, ViewPort, V2, Map, Button ) {
+define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/creature', 'basic/button'],
+		function(Scene, TiledMap, ViewPort, V2, Map, Creature, Button) {
 			function PlayScene() {
 				Scene.call(this);
 
@@ -19,6 +19,8 @@ define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'basic/b
 
 				var viewport = new ViewPort(true);
 				viewport.add(map);
+				viewport.add(new Creature());
+
 				viewport.dragable(true);
 
 				this.add(viewport);

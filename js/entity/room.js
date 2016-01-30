@@ -37,7 +37,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Ent
 	Room.prototype = new Entity();
 
 	Room.prototype.addDoor = function(r, p1, p2) {
-		if( r == this || r == null || typeof(r) != "object" || this.lookup[r.id] ) return;
+		if( r == this || r == null || typeof(r) != "object" || (this.lookup[r.id] && this.lookup[r.id].dist == 1)) return;
 		var door = new Door(p1, p2, this.parent);
 		r.connect(this, door);
 		this.connect(r, door);

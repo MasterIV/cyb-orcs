@@ -82,7 +82,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		}
 
 		if(costs) {
-			this.add(new Moneymation(costs));
+			this.add(new Moneymation(costs, false));
 			scene.money -= costs;
 		}
 	}
@@ -130,7 +130,9 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			this.delta += delta;
 			if(this.delta >= this.cooldown) {
 				this.delta -= this.cooldown;
-				this.scene.money += (this.progress*this.gold*1000/this.cooldown)|0;
+				var additionalMoney = (this.progress*this.gold*1000/this.cooldown)|0;
+				this.scene.money += additionalMoney;
+				this.add(new Moneymation(additionalMoney, true));
 				this.progress = 0;
 			}
 		}

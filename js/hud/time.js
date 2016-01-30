@@ -1,8 +1,9 @@
-define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'definition/easing', 'geo/v2', 'geo/rect'],
-	function(Button, Entity, ImageEntity, Morph, g, Easing, V2, Rect) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'core/sound', 'definition/easing', 'geo/v2', 'geo/rect'],
+	function(Button, Entity, ImageEntity, Morph, g, s, Easing, V2, Rect) {
 
 	g.add('img/top_UI_sun.png');
 	g.add('img/top_UI_sun_bar.png');
+	s.add('snd/pause.ogg');
 
 	function Time(parent) {
 		Entity.call(this, new V2(parent.size.x - 456, -100), new V2(456, 100));
@@ -37,6 +38,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 	Time.prototype.onClick = function() {
 		this.paused = this.parent.parent.togglePause();
+		if (this.paused) s.play('snd/pause.ogg');
 		return true;
 	};
 

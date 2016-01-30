@@ -15,9 +15,9 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.viewport = new ViewPort(true);
 				this.viewport.add(map);
 
-				this.viewport.add(new Creature(new V2(9,9), map, null));
-				this.viewport.add(new Creature(new V2(10,9), map, null));
-				this.viewport.add(new Creature(new V2(11,9), map, null));
+				this.viewport.add(new Creature(new V2(9,9), map, 1, null));
+				this.viewport.add(new Creature(new V2(10,9), map, 1, null));
+				this.viewport.add(new Creature(new V2(11,9), map, 1, null));
 
 				this.viewport.add(cursor);
 

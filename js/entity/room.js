@@ -40,6 +40,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 	function Room(pos, shape, definition, scene) {
 		Entity.call(this, pos);
+		this.scene = scene;
 		this.shape = shape;
 		this.definition = definition;
 		this.capacity = 0;
@@ -52,10 +53,12 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.gold = definition.gold;
 		this.heal = definition.heal;
 		this.train = definition.train;
+		this.ranged = definition.ranged;
 
 		this.maxHp = 0;
 
 		this.cooldown = definition.cooldown;
+		this.delta = 0;
 		this.progress = 0;
 
 		var self = this;
@@ -87,13 +90,30 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 	Room.prototype = new Entity();
 
 	Room.prototype.attack = function (damage) {
+		if(this.hp < 1) return;
 		this.hp = Math.max(0, this.hp - damage);
+		if(this.hp < 1) this.scene.housings -= this.supply;
+	};
+
+	Room.prototype.repair = function(skill) {
+		if(this.hp < 1 && skill) this.scene.housings += this.supply;
+		this.hp = Math.min(this.maxHp, this.hp+skill);
 	};
 
 	Room.prototype.use = function(creature) {
+		if(this.hp < this.maxHp) {
+			this.repair(creature.skills.repair);
+			creature.train('repair');
+			return;
+		}
+
 		if(this.gold) {
 			this.progress += creature.skills.miner;
 			creature.train('miner');
+		}
+
+		if(this.ranged) {
+			//
 		}
 
 		if(this.train) {
@@ -104,9 +124,16 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		if(this.heal) creature.hp = Math.min(creature.hp+this.heal, creature.skills.hp);
 	};
 
-	Room.prototype.onUpdate = function(ctx) {
+	Room.prototype.onUpdate = function(delta) {
 		if(this.overlay) this.overlay.alpha = 1-(this.hp/this.maxHp);
-
+		if(this.hp > 0 && this.gold) {
+			this.delta += delta;
+			if(this.delta >= this.cooldown) {
+				this.delta -= this.cooldown;
+				this.scene.money += (this.progress*this.gold*1000/this.cooldown)|0;
+				this.progress = 0;
+			}
+		}
 	};
 
 	Room.prototype.addDoor = function(r, p1, p2) {

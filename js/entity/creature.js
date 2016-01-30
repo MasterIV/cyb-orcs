@@ -4,9 +4,11 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 	graphic.add('img/orc_red_spritesheet.png');
 	graphic.add('img/orc_spritesheet.png');
 	graphic.add('img/select_arrow.png');
-	var ts = config.size.tile;
 
-	function Creature(pos, map, type) {
+	var ts = config.size.tile;
+	var actionSpeed = 1000;
+
+	function Creature(pos, map, level, type) {
 		Entity.call(this, new V2(ts.x * pos.x, ts.y * pos.y), new V2(ts.x, ts.y));
 
 		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,6), 200, true );
@@ -23,25 +25,27 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 
 		this.map = map;
 
-		this.hp = 10;
+		this.ep = {};
+		this.levels = {};
+		this.skills = {};
 
-		this.ep = {
+		for(var i in skills ) {
+			this.levels[i] = level;
+			this.ep[i] = getEp(level);
+			this.skills[i] = skills[i].formel(level);
+		}
 
-		};
-
-		this.skills = {
-			miner: 10,
-			hp: 10,
-			attack: 10,
-			ranged: 10,
-			repair: 10
-		};
+		this.hp = this.skills.hp;;
 	}
 
 	Creature.prototype = new Entity();
 
 	Creature.prototype.train = function(skill) {
-
+		this.ep[skill]++;
+		if(getLevel(this.ep[skill]) > this.levels[skill]) {
+			this.levels[skill]++;
+			this.skills[skill] = skills[skill].formel(this.levels[skill]);
+		}
 	};
 
 	Creature.prototype.onClick = function() {
@@ -79,6 +83,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			}
 		} else if(this.dest) {
 			// find path
+			this.cooldown = 0;
 			if(this.mapPos.equal(this.dest)) {
 				this.dest = null;
 			} else {
@@ -95,8 +100,8 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			this.img.state = 4;
 			this.cooldown += delta;
 
-			if(this.cooldown >= 1000) {
-				this.cooldown -= 1000;
+			if(this.cooldown >= actionSpeed) {
+				this.cooldown -= actionSpeed;
 				var room = this.map.get(this.mapPos.x, this.mapPos.y);
 				room.use(this);
 			}

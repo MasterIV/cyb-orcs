@@ -7,9 +7,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.housings = 10;
 
 				var map = new Map();
-				var ork = new Creature(new V2(9,9), map, null);
 
-				map.selectUnit(ork);
 				map.selectRoom(shapes[13]);
 				map.addRoom(new V2(9,9));
 
@@ -21,7 +19,11 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 				var viewport = new ViewPort(true);
 				viewport.add(map);
-				viewport.add(ork);
+
+				viewport.add(new Creature(new V2(9,10), map, null));
+				viewport.add(new Creature(new V2(10,9), map, null));
+				viewport.add(new Creature(new V2(9,9), map, null));
+				viewport.add(new Creature(new V2(10,10), map, null));
 
 				viewport.dragable(true);
 

@@ -8,27 +8,34 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 	function Creature(pos, map, type) {
 		Entity.call(this, new V2(ts.x * pos.x, ts.y * pos.y), new V2(ts.x, ts.y));
 
-		this.img = new Animation( 'img/orc_spritesheet.png', new V2(0,0), new V2(4,4), 200, true );
+		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,4), 200, true );
 		this.add(this.img);
 
 		this.dest = null;
 		this.mapPos = pos;
 		this.movement = null;
 		this.speed = 160;
+		this.cooldown = 0;
 
 		this.map = map;
 
-		//this.skill = null;
-		//this.hp = null;
-		//this.attack = null;
-		//this.randomPos = {};
-		//this.randomPosition();
+
+		this.miner = 10;
+		this.hp = 10;
+		this.attack = 10;
+		this.ranged = 5;
 	}
 
 	Creature.prototype = new Entity();
 
+	Creature.prototype.onClick = function() {
+		this.map.selectUnit(this);
+		return true;
+	};
+
 	Creature.prototype.onUpdate = function(delta) {
 		if(this.movement) {
+			// walk to next tile
 			this.position.x += ( this.movement.x / 1000 ) * delta;
 			this.position.y += ( this.movement.y / 1000 ) * delta;
 
@@ -43,6 +50,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 				this.movement = null;
 			}
 		} else if(this.dest) {
+			// find path
 			if(this.mapPos.equal(this.dest)) {
 				this.dest = null;
 			} else {
@@ -55,12 +63,12 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 					if( this.movement.y > 0 ) this.img.state = 0;
 				}
 			}
+		} else {
+			//interact with room / fight
 		}
 	};
 
 	Creature.prototype.walk = function(dest) {
-		console.log(dest);
-
 		var target = this.map.get(dest.x, dest.y);
 		if(target == null || typeof(target) != "object") return;
 		var current = this.map.get(this.mapPos.x, this.mapPos.y);

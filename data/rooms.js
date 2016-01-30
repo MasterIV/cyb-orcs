@@ -13,7 +13,7 @@ var rooms = {
 		cost: 30,
 		hp: 70,
 		pic: 'img/rooms/meat_white.png',
-		cooldown: 1000
+		cooldown: 1000,
 		heal: 4
 	},
 	mine: {

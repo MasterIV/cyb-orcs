@@ -1,5 +1,5 @@
-define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'geo/v2', 'geo/rect', 'hud/tooltip'],
-	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, V2, Rect, Tooltip) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip'],
+	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip) {
 
 	g.add('img/UI.png');
 //	g.add('img/hud/hammer.png');
@@ -44,6 +44,9 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 
 		// building tooltip
 		this.tooltip = new Tooltip(parent, new Colors('#9c9c9c', '#9c9c9c'), this);
+
+		// room shape preview
+		this.layout = new Layout(shapes[Math.floor(Math.random()*(shapes.length-1))]);
 	}
 
 	BuildMenu.prototype = new Entity();
@@ -52,6 +55,33 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		this.add(new Morph( { position: { y: this.parent.size.y - this.size.y } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
 		s.play('snd/drums.ogg');
 	};
+
+	BuildMenu.prototype.draw = function(ctx) {
+		Entity.prototype.draw.call(this, ctx);
+
+		var pos = new V2(748, 64).add(this.position);
+
+		var max_x = 0;
+		var max_y = 0;
+		this.layout.each(function(x,y) {
+			if (x > max_x)
+				max_x = x;
+			if (y > max_y)
+				max_y = y;
+		});
+		if (max_x == 0)
+			pos.x += 60;
+		if (max_x == 1)
+			pos.x += 20;
+		if (max_y == 0)
+			pos.y += 20;
+		this.layout.each(function(x,y){
+				ctx.fillStyle = '#f6d51a';
+				ctx.strokeStyle = '#000000';
+				ctx.fillRect((pos.x + x*40)|0, (pos.y + y*40)|0, 40, 40);
+				ctx.strokeRect((pos.x + x*40)|0, (pos.y + y*40)|0, 40, 40);
+			});
+	}
 
 	BuildMenu.prototype.roomClicked = function(room) {
 		if (!this.clickable) return;

@@ -54,7 +54,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 				ctx.fillStyle = 'green';
 				ctx.fillRect(10, 10+(this.enemy*80), p, 5);
 			}
-		}
+		};
 
 		Creature.prototype.train = function (skill) {
 			this.ep[skill]++;

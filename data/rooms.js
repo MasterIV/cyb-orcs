@@ -42,7 +42,8 @@ var rooms = {
 		cost: 20,
 		hp: 60,
 		pic: 'img/rooms/axe_white.png',
-		cooldown: 1000
+		cooldown: 1000,
+		train: 1
 	},
 	voodoo: {
 		name: 'Voodoo Cave',

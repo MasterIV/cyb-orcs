@@ -20,6 +20,50 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 		};
 	}
 
+	function Path() {
+		this.nodes = [];
+		this.position = Zero();
+
+		this.setParent = function(p) {
+			this.parent = p;
+		};
+
+		this.draw = function(ctx) {
+			if(this.nodes.length) {
+				ctx.strokeStyle = 'red';
+				ctx.lineWidth = 5;
+
+				ctx.beginPath();
+				ctx.moveTo(9.5*size.tile.x, 9.5*size.tile.x);
+
+				for(var i in this.nodes) {
+					var n = this.nodes[i].sum(new V2(.5,.5));
+					ctx.lineTo(n.x * size.tile.x, n.y * size.tile.x);
+				}
+
+				ctx.stroke();
+			}
+		};
+
+		this.getPath = function(dest) {
+			var target = this.parent.get(dest.x, dest.y);
+			if( target == null || typeof(target) != "object" ) return;
+
+			this.nodes = [];
+			var current = new V2(9,9);
+			var room;
+
+			while(current && !current.equal(dest)) {
+				room = this.parent.get(current.x, current.y);
+				if(!room.lookup[target.id] && room.id != target.id) return;
+				current = room.findPath(current, dest);
+				this.nodes.push(current);
+			}
+		}
+	}
+
+	var path = new Path();
+
 	function getPos(pos) {
 		var x = Math.floor( pos.x/size.tile.x);
 		var y = Math.floor( pos.y/size.tile.y);
@@ -45,6 +89,7 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 	function Map() {
 		Entity.call(this, Zero(), new V2(size.map.x*size.tile.x, size.map.y*size.tile.y));
 		this.add(new Cursor());
+		this.add(path);
 
 		this.canvas = document.createElement('canvas');
 		this.canvas.width = this.size.x;
@@ -62,9 +107,6 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 					size.tile.x*x, size.tile.y*y, size.tile.x, size.tile.y);
 			}
 		}
-
-		this.selectRoom(shapes[10], null);
-
 		// debug grid
 		//for(var x = 0; x < size.map.x; x++)
 		//	this.ctx.fillRect(x*size.tile.x, 0, 1, size.map.y*size.tile.y);
@@ -86,6 +128,12 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 
 	Map.prototype.onClick = function(pos) {
 		var p = getPos(pos);
+
+		if( !this.layout ) {
+			path.getPath(p);
+			return;
+		}
+
 		var self = this;
 		var possible = true;
 
@@ -95,10 +143,6 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 
 		if(!possible) return;
 		this.addRoom(p);
-
-		console.log(getPos(pos));
-		// clear instead of setting a new one
-		this.selectRoom(shapes[Math.floor(Math.random()*shapes.length)], null);
 	};
 
 	Map.prototype.addRoom = function(pos) {
@@ -115,6 +159,9 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 		});
 
 		this.entities.unshift(room);
+
+		this.layout = null;
+		this.type = null;
 	};
 
 	Map.prototype.selectRoom = function(layout, type) {

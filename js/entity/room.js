@@ -51,7 +51,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Ent
 	Room.prototype.connect = function(r, door) {
 		for(var id in this.lookup)
 			r.distance(id, this.lookup[id].dist+1, door);
-		this.lookup[r.id] = { dist: 1, door: door };
+		this.distance(r.id, 1, door);
 		this.neighbours.push({room: r, door: door });
 	};
 
@@ -78,9 +78,10 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Ent
 			else if (dest.y < from.y && this == this.parent.get(from.x, from.y-1))
 				return new V2(from.x, from.y-1);
 		} else {
+			if(!this.lookup[destRoom.id]) return null;
 			var door = this.lookup[destRoom.id].door;
 			var entrance = door.points[this.id];
-			if(dest.equal(entrance)) {
+			if(from.equal(entrance)) {
 				for(var i in door.points)
 					if(i != this.id)
 						return door.points[i];

@@ -1,6 +1,20 @@
-define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Entity, V2, config, graphic) {
+define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'], function(Entity, V2, config, graphic, Image) {
 	graphic.add('img/tiles_spritesheet.png');
 	graphic.add('img/doors.png');
+
+	graphic.add('img/rooms/axe_red.png');
+	graphic.add('img/rooms/axe_white.png');
+	graphic.add('img/rooms/base_red.png');
+	graphic.add('img/rooms/base_white.png');
+	graphic.add('img/rooms/defence_red.png');
+	graphic.add('img/rooms/defence_white.png');
+	graphic.add('img/rooms/gold_red.png');
+	graphic.add('img/rooms/gold_white.png');
+	graphic.add('img/rooms/meat_red.png');
+	graphic.add('img/rooms/meat_white.png');
+	graphic.add('img/rooms/housing_red.png');
+	graphic.add('img/rooms/housing_white.png');
+
 	var ts = config.size.tile;
 	var roomId = 1;
 
@@ -34,8 +48,21 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Ent
 		this.lookup = {};
 		this.neighbours = [];
 
+		this.supply = 0;
+		this.gold = 0;
+		this.cooldown = definition.cooldown;
+
 		var self = this;
-		this.shape.each(function () { self.capacity++; });
+		this.shape.each(function () {
+			if(definition.supply)
+				this.supply += definition.supply;
+			if(definition.gold)
+				this.gold += definition.gold;
+			self.capacity++;
+		});
+
+		if(!definition.nobuild)
+			this.add(new Image(shape.iconPos().sum(new V2(5,5)), definition.pic));
 	}
 
 	Room.prototype = new Entity();

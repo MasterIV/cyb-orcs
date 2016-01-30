@@ -1,4 +1,6 @@
-define(function() {
+define(['config/config', 'geo/v2'], function(config, V2) {
+	var ts = config.size.tile;
+
 	function Layout(data) {
 		this.shape = data;
 		this.data = data.layout;
@@ -16,6 +18,10 @@ define(function() {
 				callback.call(this, x+pos.x, y+pos.y);
 			});
 		};
+
+		this.iconPos = function() {
+			return new V2(this.icon[0]*ts.x, this.icon[1]*ts.y);
+		}
 	}
 
 	return Layout;

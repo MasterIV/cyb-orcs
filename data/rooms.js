@@ -6,7 +6,8 @@ var rooms = {
 		pic: 'img/rooms/base_white.png',
 		nobuild: true,
 		supply: 0.5,
-		gold: 0.5
+		gold: 0.5,
+		cost: 0
 	},
 	meat: {
 		name: 'Butchery',

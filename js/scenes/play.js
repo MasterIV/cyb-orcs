@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/creature', 'basic/button'],
-		function(Scene, TiledMap, ViewPort, V2, Map, Creature, Button) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature'],
+		function(Scene, ViewPort, V2, Map, HUD, Button, Creature ) {
 			function PlayScene() {
 				Scene.call(this);
 
@@ -26,6 +26,8 @@ define(['lib/scene', 'lib/map', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/
 				this.add(viewport);
 				this.add(add);
 				viewport.centerSelf();
+
+				this.add( new HUD(this.size) );
 			}
 
 			PlayScene.prototype = new Scene();

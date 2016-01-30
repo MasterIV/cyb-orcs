@@ -4,6 +4,7 @@ var orknames = [
 	'Samuel',
 	'Felix',
 	'Tobias',
+	'Hanz',
 	'Gludbog',
 	'Ulgha',
 	'Kubguk',

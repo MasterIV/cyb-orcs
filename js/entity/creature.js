@@ -65,6 +65,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		};
 
 		Creature.prototype.onClick = function () {
+			if(this.enemy) return false;
 			this.map.selectUnit(this);
 			return true;
 		};

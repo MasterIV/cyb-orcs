@@ -1,12 +1,13 @@
 define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 	graphic.add('img/gold_icon.png');
 
-	function Moneymation(cost, moreMoney) {
+	function Moneymation(cost, shape, moreMoney) {
 		Entity.call(this);
 		this.image = graphic['img/gold_icon.png'];
 		this.animationWay = 0;
-		this.cost = cost;
 		this.moreMoney = moreMoney;
+		this.cost = cost;
+		this.shape = shape;
 	}
 
 	Moneymation.prototype = new Entity();
@@ -20,16 +21,21 @@ define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 	};
 
 	Moneymation.prototype.onDraw = function (ctx) {
-		if (this.moreMoney && this.cost != 0){
+		var xPosition = this.shape.iconPos().x;
+		var yPosition = this.shape.iconPos().y + (this.animationWay * 2) * -1;
+
+		if (this.cost > 0 && this.moreMoney){
+			console.log(this.shape.iconPos());
 			ctx.font = "14px arial";
 			ctx.fillStyle = "white";
-			ctx.fillText("+"+this.cost, 20, ((this.animationWay * 2) * -1) + 15);
-			ctx.drawImage(this.image, 0, (this.animationWay * 2) * -1, 20, 20);
-		} else if (this.cost != 0) {
+			ctx.fillText("+"+this.cost, xPosition + 70, yPosition + 15 );
+			ctx.drawImage(this.image, xPosition + 45, yPosition, 20, 20);
+
+		} else if (this.cost < 0 || !this.moreMoney) {
 			ctx.font = "14px arial";
 			ctx.fillStyle = "red";
-			ctx.fillText("-"+this.cost, 20, (this.animationWay * 2) * -1);
-			ctx.drawImage(this.image, 0, (this.animationWay * 2) * -1, 20, 20);
+			ctx.fillText("-"+this.cost, xPosition + 70, yPosition + 15 );
+			ctx.drawImage(this.image, xPosition + 45, yPosition, 20, 20);
 		}
 	};
 

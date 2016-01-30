@@ -1,5 +1,5 @@
-define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slideinright', 'basic/morph', 'definition/easing', 'basic/layout', 'core/sound'],
-	function(Scene, Button, game, V2, SlideInRightTransition, Morph, Easing, Layout, s) {
+define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slideinright', 'transitions/slideinleft', 'basic/morph', 'definition/easing', 'basic/layout', 'core/sound'],
+	function(Scene, Button, game, V2, SlideInRightTransition, SlideInLeftTransition, Morph, Easing, Layout, s) {
 
 		s.add('snd/drums.ogg');
 
@@ -8,7 +8,7 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 
 			var playButton = Button.create(new V2(0, 680), function() { game.scene = require('config/scenes').play; s.play('snd/drums.ogg'); }).rect(300, 80).text("Play");
 			var creditsButton = Button.create(new V2(0, 680), function() { game.scene = new SlideInRightTransition(require('config/scenes').credits, 1000, Easing.OUTQUAD); }).rect(300, 80).text("Credits");
-			var helpButton = Button.create(new V2(0, 680), function() { game.scene = require('config/scenes').help; }).rect(300, 80).text("Help");
+			var helpButton = Button.create(new V2(0, 680), function() { game.scene = new SlideInLeftTransition(require('config/scenes').help, 1000, Easing.OUTQUAD); }).rect(300, 80).text("Help");
 
 			var vLayout = new Layout.vertical(new V2(0, 100), 20, 50);
 			vLayout.add(playButton);

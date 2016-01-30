@@ -1,8 +1,9 @@
-define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V2'], function (Entity, config, graphic, Animation, V2) {
+define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V2', 'basic/image'], function (Entity, config, graphic, Animation, V2, Image) {
 	graphic.add('img/hero_gold_spritesheet.png');
 	graphic.add('img/hero_silver_spritesheet.png');
 	graphic.add('img/orc_red_spritesheet.png');
 	graphic.add('img/orc_spritesheet.png');
+	graphic.add('img/select_arrow.png');
 	var ts = config.size.tile;
 
 	function Creature(pos, map, type) {
@@ -10,6 +11,8 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 
 		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,4), 200, true );
 		this.add(this.img);
+		this.cursor = new Image(new V2(42,-20), 'img/select_arrow.png', .5);
+		this.add(this.cursor);
 
 		this.dest = null;
 		this.mapPos = pos;
@@ -19,11 +22,14 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 
 		this.map = map;
 
-
-		this.miner = 10;
 		this.hp = 10;
-		this.attack = 10;
-		this.ranged = 5;
+		this.skills = {
+			miner: 10,
+			hp: 10,
+			attack: 10,
+			ranged: 10,
+			repair: 10
+		};
 	}
 
 	Creature.prototype = new Entity();
@@ -34,6 +40,9 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 	};
 
 	Creature.prototype.onUpdate = function(delta) {
+		this.cursor.visible = this.map.unit == this;
+		this.cursor.position.y = this.img.frame*2-20;
+
 		if(this.movement) {
 			// walk to next tile
 			this.position.x += ( this.movement.x / 1000 ) * delta;

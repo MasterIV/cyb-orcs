@@ -5,6 +5,7 @@ define(['geo/v2', 'geo/rect', 'core/mouse'], function(V2, Rect, mouse) {
 		this.entities = [];
 		this.blocking = [];
 		this.parent = null;
+		this.visible = true;
 	}
 
 	Entity.prototype.setSize = function (w, h) {
@@ -97,6 +98,7 @@ define(['geo/v2', 'geo/rect', 'core/mouse'], function(V2, Rect, mouse) {
 	};
 
 	Entity.prototype.draw = function (ctx) {
+		if(!this.visible) return;
 		ctx.save();
 		ctx.translate(this.position.x | 0, this.position.y | 0);
 

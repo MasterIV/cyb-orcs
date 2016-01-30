@@ -93,7 +93,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic'], function(Ent
 
 	Room.prototype.onDraw = function(ctx) {
 		ctx.drawImage(graphic['img/tiles_spritesheet.png'],
-			0, shapes.indexOf(this.shape.data)*ts.y*2, ts.x*3, ts.y*2,
+			0, shapes.indexOf(this.shape.shape)*ts.y*2, ts.x*3, ts.y*2,
 			0, 0, ts.x*3, ts.y*2 );
 	};
 

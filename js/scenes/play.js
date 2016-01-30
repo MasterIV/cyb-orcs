@@ -5,9 +5,11 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 				this.money = 500;
 				this.housings = 10;
+				this.orcs = 3;
 
 				var map = new Map();
 				var cursor = new Cursor(map);
+
 
 				map.addRoom(new V2(9,9), cursor.selectRoom(shapes[13]), cursor.shape);
 
@@ -20,11 +22,11 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				var viewport = new ViewPort(true);
 				viewport.add(map);
 
-				viewport.add(new Creature(new V2(9,10), map, null));
-				viewport.add(new Creature(new V2(10,9), map, null));
 				viewport.add(new Creature(new V2(9,9), map, null));
-				viewport.add(new Creature(new V2(10,10), map, null));
 				viewport.add(cursor);
+				viewport.add(new Creature(new V2(10,9), map, null));
+				viewport.add(new Creature(new V2(11,9), map, null));
+
 
 				viewport.dragable(true);
 

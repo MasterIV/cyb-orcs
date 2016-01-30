@@ -82,19 +82,27 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 	};
 
 	Map.prototype.addRoom = function (pos, layout, type) {
-		var self = this;
-		var room = new Room(new V2(pos.x * size.tile.x, pos.y * size.tile.y), layout, type, this.scene);
-		room.setParent(this);
+		var costs = 0;
+		if (typeof(layout) != "undefined") {
+			layout.each(function(){
+				costs += type.cost;
+			});
+		}
 
-		layout.eachRel(pos, function (x, y) {
-			self.tiles[x][y] = room;
-			room.addDoor(self.get(x - 1, y), new V2(x - 1, y), new V2(x, y));
-			room.addDoor(self.get(x + 1, y), new V2(x, y), new V2(x + 1, y));
-			room.addDoor(self.get(x, y - 1), new V2(x, y - 1), new V2(x, y));
-			room.addDoor(self.get(x, y + 1), new V2(x, y), new V2(x, y + 1));
-		});
+		if (costs < this.scene.money || costs == 0) {
+			var self = this;
+			var room = new Room(new V2(pos.x * size.tile.x, pos.y * size.tile.y), layout, type, this.scene);
+			room.setParent(this);
 
-		this.entities.unshift(room);
+			layout.eachRel(pos, function (x, y) {
+				self.tiles[x][y] = room;
+				room.addDoor(self.get(x - 1, y), new V2(x - 1, y), new V2(x, y));
+				room.addDoor(self.get(x + 1, y), new V2(x, y), new V2(x + 1, y));
+				room.addDoor(self.get(x, y - 1), new V2(x, y - 1), new V2(x, y));
+				room.addDoor(self.get(x, y + 1), new V2(x, y), new V2(x, y + 1));
+			});
+			this.entities.unshift(room);
+		}
 	};
 
 	Map.prototype.getPos = function (pos) {

@@ -27,14 +27,14 @@ define(['basic/entity', 'core/graphic'], function(Entity, graphic) {
 		if (this.cost > 0 && this.moreMoney){
 			ctx.font = "14px arial";
 			ctx.fillStyle = "white";
-			ctx.fillText("+"+this.cost, xPosition + 70, yPosition + 15 );
-			ctx.drawImage(this.image, xPosition + 45, yPosition, 20, 20);
+			ctx.fillText("+"+this.cost, xPosition + 55, yPosition + 15 );
+			ctx.drawImage(this.image, xPosition + 30, yPosition, 20, 20);
 
 		} else if (this.cost < 0 || !this.moreMoney) {
 			ctx.font = "14px arial";
 			ctx.fillStyle = "red";
-			ctx.fillText("-"+this.cost, xPosition + 70, yPosition + 15 );
-			ctx.drawImage(this.image, xPosition + 45, yPosition, 20, 20);
+			ctx.fillText("-"+this.cost, xPosition + 55, yPosition + 15 );
+			ctx.drawImage(this.image, xPosition + 30, yPosition, 20, 20);
 		}
 	};
 

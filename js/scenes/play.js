@@ -19,7 +19,6 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				viewport.add(new Creature(new V2(10,9), map, null));
 				viewport.add(new Creature(new V2(11,9), map, null));
 
-
 				viewport.add(cursor);
 				viewport.dragable(true);
 

@@ -9,7 +9,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 	function Creature(pos, map, type) {
 		Entity.call(this, new V2(ts.x * pos.x, ts.y * pos.y), new V2(ts.x, ts.y));
 
-		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,4), 200, true );
+		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,6), 200, true );
 		this.add(this.img);
 		this.cursor = new Image(new V2(42,-20), 'img/select_arrow.png', .5);
 		this.add(this.cursor);
@@ -73,6 +73,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 				}
 			}
 		} else {
+			this.img.state = 4;
 			//interact with room / fight
 		}
 	};

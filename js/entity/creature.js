@@ -134,11 +134,9 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 						if (room.hp > 1) {
 							room.harm(this.skills.attack);
 							this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(-25,-25)), new V2(5, 1), 200));
-							console.log("attack the room");
 						}
 
 						if (room.hp < 1) {
-							console.log("search new target");
 							var target = this.findRoomTarget();
 							if (target) this.walk(target);
 						}
@@ -176,7 +174,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			this.map.each(function(r, p) {
 				if(r.hp < 1) return;
 				var d = self.mapPos.dist(p);
-				if( dist = null || d < dist ) {
+				if( dist == null || d < dist ) {
 					closest = p;
 					dist = d;
 				}

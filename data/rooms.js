@@ -7,7 +7,8 @@ var rooms = {
 		nobuild: true,
 		supply: 0.5,
 		gold: 0.5,
-		cost: 0
+		cost: 0,
+		cooldown: 7500
 	},
 	meat: {
 		name: 'Butchery',

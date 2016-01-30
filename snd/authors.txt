@@ -1,2 +1,4 @@
 drums.ogg
 	CC-BY 3.0 by rodincoil (http://www.freesound.org/people/rodincoil/sounds/271430/)
+room.ogg
+	CC-BY 3.0 by starpause (http://www.freesound.org/people/starpause/sounds/13640/)

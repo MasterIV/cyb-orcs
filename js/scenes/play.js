@@ -20,12 +20,13 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				viewport.add(new Creature(new V2(11,9), map, null));
 
 				viewport.add(cursor);
+
 				viewport.dragable(true);
 
 				this.add(viewport);
 				viewport.centerSelf();
 
-				this.add( new HUD(this.size) );
+				this.add( new HUD(this.size, cursor) );
 			}
 
 			PlayScene.prototype = new Scene();

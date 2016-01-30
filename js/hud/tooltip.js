@@ -1,11 +1,12 @@
-define(['basic/button', 'basic/entity', 'basic/morph', 'basic/rect', 'basic/text', 'config/fonts', 'core/graphic', 'definition/colors', 'definition/easing', 'geo/v2', 'geo/rect'],
-	function(Button, Entity, Morph, RectEntity, TextEntity, font, g, Colors, Easing, V2, Rect) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'basic/text', 'config/fonts', 'core/graphic', 'definition/colors', 'definition/easing', 'geo/v2', 'geo/rect'],
+	function(Button, Entity, ImageEntity, Morph, RectEntity, TextEntity, font, g, Colors, Easing, V2, Rect) {
 
+	g.add('img/UI_tooltip.png');
 	g.add('img/cancel.png');
 
 	function Tooltip(parent, colors, buildmenu) {
-		var width = 900;
-		var height = 170;
+		var width = 515;
+		var height = 167;
 		var close_b_size = 32;
 
 		Entity.call(this, new V2(parent.size.x / 2 - width / 2, parent.size.y), new V2(width, height));
@@ -30,7 +31,7 @@ define(['basic/button', 'basic/entity', 'basic/morph', 'basic/rect', 'basic/text
 		close.rect(close_b_size, close_b_size, new Colors('#9c9c9c', '#9c9c9c', '#5c5c5c', '#5c5c5c'));
 		close.img('img/cancel.png');
 
-		this.add( new RectEntity(Zero(), this.size, colors) );
+		this.add( new ImageEntity(Zero(), 'img/UI_tooltip.png') );
 		this.add( this.title );
 		this.add( this.text );
 		this.add( this.text2 );

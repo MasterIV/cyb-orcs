@@ -7,8 +7,10 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		g.add(rooms[room].pic);
 	}
 	s.add('snd/drums.ogg');
+	s.add('snd/room.ogg');
 
-	function BuildMenu(parent) {
+	function BuildMenu(parent, cursor) {
+		this.cursor = cursor;
 		this.b_size = 90;
 		this.b_top = 59;
 		this.b_left = 56
@@ -46,7 +48,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		this.tooltip = new Tooltip(parent, new Colors('#9c9c9c', '#9c9c9c'), this);
 
 		// room shape preview
-		this.layout = new Layout(shapes[Math.floor(Math.random()*(shapes.length-1))]);
+		this.layout = new Layout(this.getRandomShape());
 	}
 
 	BuildMenu.prototype = new Entity();
@@ -70,7 +72,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 				max_y = y;
 		});
 		if (max_x == 0)
-			pos.x += 60;
+			pos.x += 40;
 		if (max_x == 1)
 			pos.x += 20;
 		if (max_y == 0)
@@ -89,6 +91,18 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		this.clickedRoom = rooms[room];
 		this.add( new Morph( { position: { y: this.parent.size.y } }, 500, Easing.INOUTCUBIC, this.moveOutFinished ) );
 		this.clickable = false;
+
+		this.cursor.selectRoom(this.layout.shape, rooms[room]);
+	};
+
+	BuildMenu.prototype.built = function() {
+		this.tooltip.close();
+		this.layout = new Layout(this.getRandomShape());
+		s.play('snd/room.ogg');
+	};
+
+	BuildMenu.prototype.getRandomShape = function() {
+		return shapes[Math.floor(Math.random()*(shapes.length-1))];
 	};
 
 	BuildMenu.prototype.moveIn = function() {

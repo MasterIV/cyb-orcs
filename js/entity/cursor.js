@@ -33,8 +33,13 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 			if (!possible) return true;
 			this.map.addRoom(p, this.layout, this.type);
 			this.layout = null;
+			this.build_menu.built();
 			return true;
 		}
+	};
+
+	Cursor.prototype.setBuildMenu = function(menu) {
+		this.build_menu = menu;
 	};
 
 	Cursor.prototype.selectRoom = function (layout, type) {

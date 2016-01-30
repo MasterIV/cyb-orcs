@@ -31,11 +31,12 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		// icon
 		this.add( new ImageEntity(Zero(), 'img/hud/hammer.png') );
 
+		var self = this;
 		for (var i = 0; i < room_definitions.length; i++)
 		{
 			var room = room_definitions[i];
 			var button = Button.create(new V2(this.b_size * (i+1) + this.b_spacing * (i+1), 0), function() {
-				this.parent.roomClicked();
+				self.roomClicked();
 			});
 			button.rect(this.b_size, this.b_size, this.b_colors);
 			button.img(room.src);

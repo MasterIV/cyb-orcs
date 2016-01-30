@@ -10,6 +10,10 @@ define(['basic/entity', 'geo/v2', 'basic/text', 'basic/rect', 'basic/image'],
 
 			Button.prototype = new Entity();
 
+			Button.prototype.onMouseDown = function() {
+				return true;
+			}
+
 			Button.create = function(pos, callback) {
 				return new Button(pos, callback);
 			};

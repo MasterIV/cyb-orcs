@@ -23,8 +23,9 @@ define(['basic/button', 'basic/entity', 'basic/morph', 'basic/rect', 'basic/text
 		y += font.default.size + this.line_sp;
 		this.text3 = new TextEntity(new V2( this.margin, y ), '', font.default);
 
+		var self = this;
 		var close = Button.create(new V2(this.size.x - close_b_size, 0), function() {
-			this.parent.close();
+			self.close();
 		});
 		close.rect(close_b_size, close_b_size, new Colors('#9c9c9c', '#9c9c9c', '#5c5c5c', '#5c5c5c'));
 		close.img('img/cancel.png');

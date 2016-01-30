@@ -1,19 +1,22 @@
-define(['basic/entity', 'geo/v2', 'entity/room'], function(Entity, V2, Room) {
-	var size = {
-		tile: new V2(100, 100),
-		map: new V2(20, 20)
-	};
-
+define(['basic/entity', 'geo/v2', 'entity/room', 'config/config'], function(Entity, V2, Room, config) {
+	var size = config.size;
 	var probability = .1;
 
 	function Layout(data) {
 		this.data = data;
+
 		this.each = function(callback) {
 			for(var x = 0; x < 3; x++)
 				for(var y = 0; y < 2; y++)
 					if(data[y][x])
 						callback.call(this, x, y);
-		}
+		};
+
+		this.eachRel = function(pos, callback) {
+			this.each(function(x, y) {
+				callback.call(this, x+pos.x, y+pos.y);
+			});
+		};
 	}
 
 	function getPos(pos) {
@@ -31,9 +34,9 @@ define(['basic/entity', 'geo/v2', 'entity/room'], function(Entity, V2, Room) {
 		if(parent.layout) {
 			var pos = getPos(parent.relativeMouse());
 
-			parent.layout.each(function(x,y){
-				ctx.fillStyle = parent.tiles[x+pos.x][y+pos.y] ? 'rgba(255,55,55,0.5)' : 'rgba(255,255,255,0.5)';
-				ctx.fillRect((x+pos.x)*size.tile.x, (y+pos.y)*size.tile.y, size.tile.x, size.tile.y);
+			parent.layout.eachRel(pos, function(x,y){
+				ctx.fillStyle = parent.get(x,y) ? 'rgba(255,55,55,0.5)' : 'rgba(255,255,255,0.5)';
+				ctx.fillRect(x*size.tile.x, y*size.tile.y, size.tile.x, size.tile.y);
 			});
 		}
 	};
@@ -74,13 +77,19 @@ define(['basic/entity', 'geo/v2', 'entity/room'], function(Entity, V2, Room) {
 		ctx.drawImage(this.canvas, 0, 0);
 	};
 
+	Map.prototype.get = function(x,y) {
+		if( x < 0 || y < 0 || x >= size.map.x || y >= size.map.y)
+			return 1;
+		return this.tiles[x][y];
+	};
+
 	Map.prototype.onClick = function(pos) {
 		var p = getPos(pos);
 		var self = this;
 		var possible = true;
 
-		this.layout.each(function (x, y) {
-			if (self.tiles[x + p.x][y + p.y]) possible = false;
+		this.layout.eachRel(p, function (x, y) {
+			if (self.get(x, y)) possible = false;
 		});
 
 		if(!possible) return;
@@ -94,16 +103,16 @@ define(['basic/entity', 'geo/v2', 'entity/room'], function(Entity, V2, Room) {
 	Map.prototype.addRoom = function(pos) {
 		var self = this;
 		var room = new Room(new V2(pos.x*size.tile.x, pos.y*size.tile.y), this.layout, this.type);
+		room.setParent(this);
 
-		this.layout.each(function(x,y){
-			self.tiles[x+pos.x][y+pos.y] = room;
-
-			//if( x+pos.x > 0 && )
-			// find the connecting rooms and build doors
-			// update the path finding graph
+		this.layout.eachRel(pos, function(x,y){
+			self.tiles[x][y] = room;
+			room.addDoor(self.get(x-1,y), new V2(x-1,y), new V2(x,y));
+			room.addDoor(self.get(x+1,y), new V2(x,y), new V2(x+1,y));
+			room.addDoor(self.get(x,y-1), new V2(x,y-1), new V2(x,y));
+			room.addDoor(self.get(x,y+1), new V2(x,y), new V2(x,y+1));
 		});
 
-		room.setParent(this);
 		this.entities.unshift(room);
 	};
 

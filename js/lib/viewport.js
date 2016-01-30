@@ -80,6 +80,13 @@ define(['basic/entity', 'geo/v2', 'geo/rect', 'basic/morph'], function(Entity, V
 		}
 	};
 
+	ViewPort.prototype.centerSelf = function() {
+		if(this.size.x == 0 && this.size.y == 0) this.inheritSize();
+		this.position.x = ( this.parent.size.x - this.size.x ) / 2;
+		this.position.y = ( this.parent.size.y - this.size.y ) / 2;
+	};
+
+
 	return ViewPort;
 });
 

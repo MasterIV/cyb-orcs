@@ -1,4 +1,4 @@
-define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V2', 'basic/image'], function (Entity, config, graphic, Animation, V2, Image) {
+define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v2', 'basic/image'], function (Entity, config, graphic, Animation, V2, Image) {
 	graphic.add('img/hero_gold_spritesheet.png');
 	graphic.add('img/hero_silver_spritesheet.png');
 	graphic.add('img/orc_red_spritesheet.png');
@@ -11,7 +11,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 
 		this.img = new Animation( 'img/orc_spritesheet.png', new V2(15,15), new V2(4,6), 200, true );
 		this.add(this.img);
-		this.cursor = new Image(new V2(42,-20), 'img/select_arrow.png', .5);
+		this.cursor = new Image(new V2(42,-10), 'img/select_arrow.png', .5);
 		this.add(this.cursor);
 
 		this.dest = null;
@@ -23,6 +23,11 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 		this.map = map;
 
 		this.hp = 10;
+
+		this.ep = {
+
+		};
+
 		this.skills = {
 			miner: 10,
 			hp: 10,
@@ -34,6 +39,10 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 
 	Creature.prototype = new Entity();
 
+	Creature.prototype.train = function(skill) {
+
+	};
+
 	Creature.prototype.onClick = function() {
 		this.map.selectUnit(this);
 		return true;
@@ -41,7 +50,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 
 	Creature.prototype.onUpdate = function(delta) {
 		this.cursor.visible = this.map.unit == this;
-		this.cursor.position.y = this.img.frame*2-20;
+		this.cursor.position.y = this.img.frame*2-10;
 
 		if(this.movement) {
 			// walk to next tile
@@ -74,7 +83,13 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/V
 			}
 		} else {
 			this.img.state = 4;
-			//interact with room / fight
+			this.cooldown += delta;
+
+			if(this.cooldown >= 1000) {
+				this.cooldown -= 1000;
+				var room = this.map.get(this.mapPos.x, this.mapPos.y);
+				room.use(this);
+			}
 		}
 	};
 

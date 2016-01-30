@@ -48,29 +48,66 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.lookup = {};
 		this.neighbours = [];
 		this.supply = 0;
-		this.gold = 0;
+
+		this.gold = definition.gold;
+		this.heal = definition.heal;
+		this.train = definition.train;
+
+		this.maxHp = 0;
+
 		this.cooldown = definition.cooldown;
+		this.progress = 0;
+
 		var self = this;
+		var costs = 0;
 
 		this.shape.each(function () {
 			if(definition.supply)
-				this.supply += definition.supply;
-			if(definition.gold)
-				this.gold += definition.gold;
+				self.supply += definition.supply;
+			costs += definition.cost;
+			self.maxHp += definition.hp;
 			self.capacity++;
 		});
 
+		this.hp = this.maxHp;
+		scene.housings += this.supply;
+
 		if(!definition.nobuild) {
 			this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
+			this.overlay = new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic.replace('white', 'red'), .8);
+			this.add(this.overlay);
 		}
 
-		if(this.definition.cost){
-			var money = scene.money - this.definition.cost;
-			scene.money = money;
+		if(costs) {
+			//this.add(new Moneymation(...));
+			scene.money -= costs;
 		}
 	}
 
 	Room.prototype = new Entity();
+
+	Room.prototype.attack = function (damage) {
+		this.hp = Math.max(0, this.hp - damage);
+	};
+
+	Room.prototype.use = function(creature) {
+		if(this.gold) {
+			this.progress += creature.skills.miner;
+			creature.train('miner');
+		}
+
+		if(this.train) {
+			creature.train('attack');
+			creature.train('hp');
+		}
+
+		if(this.heal) creature.hp = Math.min(creature.hp+this.heal, creature.skills.hp);
+	};
+
+	Room.prototype.onUpdate = function(ctx) {
+		if(this.overlay) this.overlay.alpha = 1-(this.hp/this.maxHp);
+
+	};
 
 	Room.prototype.addDoor = function(r, p1, p2) {
 		if( r == this || r == null || typeof(r) != "object" || (this.lookup[r.id] && this.lookup[r.id].dist == 1)) return;

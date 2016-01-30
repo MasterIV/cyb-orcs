@@ -5,6 +5,7 @@ define(['basic/entity', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'
 
 	function Map(scene) {
 		Entity.call(this, Zero(), new V2(size.map.x * size.tile.x, size.map.y * size.tile.y));
+		this.scene = scene;
 
 		this.scene = scene;
 		this.canvas = document.createElement('canvas');

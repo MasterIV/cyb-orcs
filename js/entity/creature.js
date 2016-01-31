@@ -52,8 +52,10 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			if(this.hp < this.skills.hp) {
 				var p = (80*this.hp/this.skills.hp)|0;
 				ctx.fillStyle = 'red';
+				if (this.enemy) ctx.fillStyle = 'blue';
 				ctx.fillRect(10, 10+(this.enemy*80), 80, 5);
 				ctx.fillStyle = 'green';
+				if (this.enemy) ctx.fillStyle = 'yellow';
 				ctx.fillRect(10, 10+(this.enemy*80), p, 5);
 			}
 		};
@@ -130,7 +132,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 
 					if(enemy) {
 						enemy.harm(this.skills.attack);
-						this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(0,0)), new V2(5, 1), 200));
+						this.add( new Animation('img/fight_animation.png', Zero(), 5, 200) );
 						this.train('attack');
 						this.train('hp');
 						return;
@@ -139,7 +141,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 					if( this.enemy ) {
 						if (room.hp > 1) {
 							room.harm(this.skills.attack);
-							this.parent.add( new Animation('img/fight_animation.png', this.position.sum(new V2(0,0)), new V2(5, 1), 200));
+							this.add( new Animation('img/fight_animation.png', Zero(), 5, 200) );
 						}
 
 						if (room.hp < 1) {

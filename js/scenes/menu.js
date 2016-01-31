@@ -4,6 +4,7 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 		graphic.add("img/main_btn_credits.png");
 		graphic.add("img/main_btn_help.png");
 		graphic.add("img/main_bg.jpg");
+		graphic.add('img/full_screen_button.png');
 		s.add('snd/drums.ogg');
 
 		function MenuScene() {
@@ -25,15 +26,15 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 
 			this.bg = "img/main_bg.jpg";
 
-			var vLayout = new Layout.vertical(new V2(0, 100), 20, 50);
+			var vLayout = new Layout.vertical(new V2(0, 280), 20, 20);
 			vLayout.add(playButton);
 			vLayout.add(creditsButton);
 			vLayout.add(helpButton);
 			this.center(vLayout);
 
-			this.add(Button.create(new V2(1200, 20), function() {
+			this.add(Button.create(new V2(1160, 20), function() {
 				self.toggleFullScreen();
-			}).rect(50, 50));
+			}).img('img/full_screen_button.png'));
 		}
 
 		MenuScene.prototype = new Scene();

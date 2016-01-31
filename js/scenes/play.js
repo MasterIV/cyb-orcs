@@ -27,7 +27,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.add(this.viewport);
 				this.viewport.centerSelf();
 
-				this.hud = new HUD(this.size, cursor);
+				this.hud = new HUD(this.size, cursor, rooms, this);
 				this.add( this.hud );
 				this.center( this.info = new UnitInfo());
 				this.paused = false;

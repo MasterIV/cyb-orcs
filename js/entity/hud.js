@@ -1,8 +1,8 @@
 define(['basic/entity', 'geo/v2', 'hud/buildmenu', 'hud/resources', 'hud/time', 'hud/levelselect'], function(Entity, V2, BuildMenu, Resources, Time, LevelSelect) {
-	function HUD(size, cursor) {
+	function HUD(size, cursor, roomDefinitions, money) {
 		Entity.call(this, Zero(), size);
 
-		var menu = new BuildMenu(this, cursor);
+		var menu = new BuildMenu(this, cursor, roomDefinitions, money);
 		this.add(menu);
 		menu.init();
 		cursor.setBuildMenu(menu);

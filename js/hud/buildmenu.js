@@ -1,5 +1,5 @@
-define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip'],
-	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip', 'basic/text'],
+	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip, TextEntity) {
 
 	g.add('img/UI.png');
 	for (var room in rooms) {
@@ -7,13 +7,15 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	}
 	s.add('snd/room.ogg');
 
-	function BuildMenu(parent, cursor) {
+	function BuildMenu(parent, cursor, roomDefinitions, playScene) {
 		this.cursor = cursor;
 		this.b_size = 90;
 		this.b_top = 59;
 		this.b_left = 56
 		this.b_spacing = 38;
 		this.b_colors = new Colors('#3c3c3c', '#3c3c3c', '#9c9c9c', '#9c9c9c');
+		this.roomDefinitions = roomDefinitions;
+		this.playScene = playScene;
 
 		var my_width = 935;
 		var my_height = 179;
@@ -27,6 +29,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		// icon
 		//this.add( new ImageEntity(Zero(), 'img/hud/hammer.png') );
 
+		// room shape preview
+		this.layout = new Layout(this.getRandomShape());
 		var self = this;
 		var i = 0;
 		for (var room in rooms)
@@ -38,15 +42,15 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 					self.roomClicked(room);
 				});
 				button.img(room_def.pic);
+
+				var text = new TextEntity(new V2(button_x, self.b_top), getTotalPrice(self.layout, room, rooms));
 				self.add(button);
+				self.add(text);
 				i++;
 			})(room);
 
 		// building tooltip
 		this.tooltip = new Tooltip(parent, new Colors('#9c9c9c', '#9c9c9c'), this);
-
-		// room shape preview
-		this.layout = new Layout(this.getRandomShape());
 	}
 
 	BuildMenu.prototype = new Entity();
@@ -57,6 +61,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 
 	BuildMenu.prototype.draw = function(ctx) {
 		Entity.prototype.draw.call(this, ctx);
+		var self = this;
 
 		var pos = new V2(748, 64).add(this.position);
 
@@ -85,12 +90,27 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	BuildMenu.prototype.roomClicked = function(room) {
 		if (!this.clickable) return;
 
-		this.clickedRoom = rooms[room];
-		this.add( new Morph( { position: { y: this.parent.size.y } }, 500, Easing.INOUTCUBIC, this.moveOutFinished ) );
-		this.clickable = false;
+		var actualRoomPrice = getTotalPrice(this.layout, room, this.roomDefinitions);
+		if(actualRoomPrice < this.playScene.money) {
+			this.clickedRoom = rooms[room];
+			this.add( new Morph( { position: { y: this.parent.size.y } }, 500, Easing.INOUTCUBIC, this.moveOutFinished ) );
+			this.clickable = false;
 
-		this.cursor.selectRoom(this.layout.shape, rooms[room]);
+			this.cursor.selectRoom(this.layout.shape, rooms[room]);
+			console.log(actualRoomPrice, this.playScene.money);
+		}
 	};
+
+	function getTotalPrice(layout, room, definitions) {
+		var roomCosts = 0;
+
+		layout.each(function(){
+			var clickedRoom = definitions[room];
+			roomCosts += clickedRoom.cost;
+		});
+
+		return roomCosts;
+	}
 
 	BuildMenu.prototype.allowBuild = function() {
 		if(!this.tooltip.canClose()) return false;

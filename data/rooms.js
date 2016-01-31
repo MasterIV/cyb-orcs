@@ -8,7 +8,7 @@ var rooms = {
 		supply: 0.5,
 		gold: 0.5,
 		cost: 0,
-		cooldown: 7000
+		cooldown: 8000
 	},
 	housing: {
 		name: 'Den',
@@ -33,7 +33,7 @@ var rooms = {
 		cost: 15,
 		hp: 50,
 		pic: 'img/rooms/gold_white.png',
-		cooldown: 7000,
+		cooldown: 8000,
 		gold: 1
 	},
 	training: {
@@ -56,4 +56,4 @@ var rooms = {
 	}
 };
 
-var startMoney = 300;
+var startMoney = 160;

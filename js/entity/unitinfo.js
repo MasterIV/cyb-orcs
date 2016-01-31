@@ -25,12 +25,14 @@ define(['basic/entity', 'geo/v2', 'basic/text', 'basic/image', 'core/graphic', '
 
 	UnitInfo.prototype.draw = function(ctx) {
 		if( !this.visible ) return;
+
+		for(var i in skills)
+			this[i].text = this.creature.levels[i];
+
 		Entity.prototype.draw.call(this, ctx);
 
 		if( this.creature ) {
 			var p = (276 * this.creature.hp / this.creature.skills.hp) | 0;
-			//ctx.fillStyle = 'red';
-			//ctx.fillRect(this.position.x+10, this.position.y+46, 276, 9);
 			ctx.fillStyle = 'green';
 			ctx.fillRect(this.position.x+10, this.position.y+46, p, 9);
 		}

@@ -9,9 +9,9 @@ var skills = {
 var epRate = 1;
 
 function getEp(level) {
-	return (level*level-level)*30;
+	return (level*level-level)*15;
 }
 
 function getLevel(xp) {
-	return (Math.sqrt(xp/30+0.25)+0.5)|0;
+	return (Math.sqrt(xp/15+0.25)+0.5)|0;
 }

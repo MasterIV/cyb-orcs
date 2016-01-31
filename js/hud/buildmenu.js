@@ -79,6 +79,11 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		this.add(new Morph( { position: { y: this.parent.size.y - this.size.y } }, 1800, Easing.INOUTCUBIC, this.moveInFinished ) );
 	};
 
+	BuildMenu.prototype.onUpdate = function(delta) {
+		for(var r in this.prices)
+			this.prices[r].font = this.prices[r].text > this.playScene.money ? font.red : font.white;
+	};
+
 	BuildMenu.prototype.draw = function(ctx) {
 		Entity.prototype.draw.call(this, ctx);
 		var self = this;
@@ -141,7 +146,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		for(var r in this.prices) {
 			var price = getTotalPrice(layout, r);
 			this.prices[r].text = price;
-			this.prices[r].font = price > this.playScene.money ? font.red : font.white;
 		}
 
 		return layout;

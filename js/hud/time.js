@@ -34,6 +34,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.gold_bounty = 0;
 		this.orc_bounty = 0;
 		this.bounty_given = true;
+		this.pause_forced = false;
 	}
 
 	Time.prototype = new Entity();
@@ -57,6 +58,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.day++;
 		this.dayDisplay.text = this.day;
 		this.paused = true;
+		this.pause_forced = true;
 		this.freeze.visible = true;
 		this.parent.parent.togglePause();
 		this.parent.showLevelSelect(this.day, this, !this.bounty_given);
@@ -66,6 +68,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.gold_bounty = gold;
 		this.orc_bounty = orcs;
 		this.paused = false;
+		this.pause_forced = false;
 		this.freeze.visible = false;
 		this.parent.parent.togglePause();
 		this.bounty_given = false;
@@ -84,6 +87,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 	};
 
 	Time.prototype.togglePause = function() {
+		if (this.pause_forced) return;
+
 		this.paused = this.parent.parent.togglePause();
 		if (this.paused) {
 			this.freeze.visible = true;

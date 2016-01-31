@@ -1,11 +1,22 @@
-define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip', 'basic/text'],
-	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip, TextEntity) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip', 'basic/text', 'definition/font'],
+	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip, TextEntity, FontStyle) {
 
 	g.add('img/UI.png');
 	for (var room in rooms) {
 		g.add(rooms[room].pic);
 	}
 	s.add('snd/room.ogg');
+
+	function getTotalPrice(layout, room, definitions) {
+		var roomCosts = 0;
+
+		layout.each(function(){
+			var clickedRoom = definitions[room];
+			roomCosts += clickedRoom.cost;
+		});
+
+		return roomCosts;
+	}
 
 	function BuildMenu(parent, cursor, roomDefinitions, playScene) {
 		this.cursor = cursor;
@@ -31,6 +42,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 
 		// room shape preview
 		this.layout = new Layout(this.getRandomShape());
+
 		var self = this;
 		var i = 0;
 		for (var room in rooms)
@@ -42,8 +54,16 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 					self.roomClicked(room);
 				});
 				button.img(room_def.pic);
+				var actualRoomPrice = getTotalPrice(self.layout, room, rooms);
 
-				var text = new TextEntity(new V2(button_x, self.b_top), getTotalPrice(self.layout, room, rooms));
+				var fontStyle = null;
+				if(actualRoomPrice > self.playScene.money) {
+					fontStyle = new FontStyle(16, '#f00', 'monospace', '#555', '', 'left', 'top');
+				} else {
+					fontStyle = new FontStyle(16, '#fff', 'monospace', '#555', '', 'left', 'top');
+				}
+
+				var text = new TextEntity(new V2(button_x, self.b_top), actualRoomPrice, fontStyle);
 				self.add(button);
 				self.add(text);
 				i++;
@@ -99,17 +119,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 			this.cursor.selectRoom(this.layout.shape, rooms[room]);
 		}
 	};
-
-	function getTotalPrice(layout, room, definitions) {
-		var roomCosts = 0;
-
-		layout.each(function(){
-			var clickedRoom = definitions[room];
-			roomCosts += clickedRoom.cost;
-		});
-
-		return roomCosts;
-	}
 
 	BuildMenu.prototype.allowBuild = function() {
 		if(!this.tooltip.canClose()) return false;

@@ -57,6 +57,7 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 	Map.prototype.selectUnit = function (unit) {
 		if (this.unit) this.unit.deselected();
 		this.unit = unit;
+		this.scene.info.select(unit);
 		this.unit.selected();
 	};
 

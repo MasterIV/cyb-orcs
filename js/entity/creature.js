@@ -42,6 +42,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			}
 
 			this.hp = this.skills.hp;
+			this.name = orknames[(Math.random()*orknames.length)|0];
 		}
 
 		Creature.prototype = new Entity();

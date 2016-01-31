@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity'],
-		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity', 'core/game'],
+		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity, game) {
 			function PlayScene() {
 				Scene.call(this);
 
@@ -27,11 +27,11 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.add(this.viewport);
 				this.viewport.centerSelf();
 
-				this.add( new HUD(this.size, cursor) );
-				this.add(Button.create(new V2(20, 200), function() {
-					self.viewport.add(new Creature(new V2(10,10), map, 10, true));
-				}).rect(50,50));
+				this.hud = new HUD(this.size, cursor);
+				this.add( this.hud );
 				this.paused = false;
+				this.map = map;
+				this.enemies = [];
 			}
 
 			PlayScene.prototype = new Scene();
@@ -52,6 +52,43 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 					this.viewport.update = ViewPort.prototype.update;
 				}
 				return this.paused;
+			};
+
+			PlayScene.prototype.spawnEnemies = function(num, level) {
+				for (var i = 0; i < num; i++) {
+					var pos = this.map.getRandomSpawnPosition();
+					if (!pos) continue;
+
+					var new_e = new Creature(pos, this.map, level, true)
+					this.enemies.push( new_e );
+					this.viewport.add( new_e );
+				}
+			};
+
+			PlayScene.prototype.spawnOrc = function() {
+				if (this.orcs >= this.housings) return;
+
+				var pos = this.map.getRandomTemplePosition();
+				if (!pos) return;
+
+				this.viewport.add( new Creature(pos, this.map, 1, false) );
+				this.orcs++;
+			};
+
+			PlayScene.prototype.creatureDeath = function(creature) {
+				if (creature.enemy) {
+					arrayRemove(this.enemies, creature);
+					if (this.enemies.length == 0)
+						this.hud.giveBounty();
+				} else {
+					this.orcs--;
+					if (this.orcs <= 0)
+						this.gameOver();
+				}
+			}
+
+			PlayScene.prototype.gameOver = function() {
+				game.scene = require('config/scenes').menu;
 			};
 
 			return PlayScene;

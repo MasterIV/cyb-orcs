@@ -14,6 +14,7 @@ define(['basic/entity', 'geo/v2', 'hud/buildmenu', 'hud/resources', 'hud/time', 
 		var time = new Time(this);
 		this.add(time);
 		time.init();
+		this.time = time;
 
 		this.levelselect = new LevelSelect(this);
 	}
@@ -22,13 +23,18 @@ define(['basic/entity', 'geo/v2', 'hud/buildmenu', 'hud/resources', 'hud/time', 
 
 	HUD.prototype.showLevelSelect = function(day, time) {
 		this.block(this.levelselect);
+		this.levelselect.setParent(this);
 		this.levelselect.show(day, time);
 	};
 
 	HUD.prototype.hideLevelSelect = function(values, time) {
 		this.remove(this.levelselect);
-		this.parent.spawnEnemies();
+		this.parent.spawnEnemies(values[0], values[1]);
 		time.setBounty(values[2], values[3]);
+	};
+
+	HUD.prototype.giveBounty = function() {
+		this.time.giveBounty();
 	};
 
 	return HUD;

@@ -2,6 +2,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 	function(Button, Entity, ImageEntity, TextEntity, font, g, s, V2, Rect, LevelOverview) {
 
 	g.add('img/UI_tooltip.png');
+	s.add('snd/level.ogg');
 
 	function LevelSelect(parent) {
 		Entity.call(this, Zero(), new V2(parent.size.x, parent.size.y));
@@ -44,6 +45,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 
 	LevelSelect.prototype.show = function(day, time) {
 		this.time = time;
+		this.day = day;
+		s.play('snd/level.ogg');
 		this.getRandomLevels();
 		this.next1.setText(this.option_names[0]);
 		this.next2.setText(this.option_names[1]);
@@ -54,7 +57,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 	};
 
 	LevelSelect.prototype.selected = function(num) {
-		var values = this.getLevelValues(this.options[num]);
+		var values = this.getLevelValues(this.options[num], this.day);
 		this.parent.hideLevelSelect(values, this.time);
 	};
 
@@ -111,7 +114,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 		return [enemies, levels, gold, orcs];
 	}
 
-	LevelSelect.prototype.onClick = function() {
+	LevelSelect.prototype.onClick = function(pos) {
+		this.dispatchReverse(this.entities, 'click', pos);
 		return true;
 	};
 

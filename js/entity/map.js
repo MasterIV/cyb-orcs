@@ -111,5 +111,40 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 		return new V2(x, y);
 	};
 
+	Map.prototype.getRandomTemplePosition = function() {
+		var tiles = [];
+		this.each(function(tile, pos) { if (tile.definition.name == 'Temple') tiles.push(pos); });
+
+		var tries = 0;
+		while(tries < 50) {
+			tries++;
+			var rand = Math.floor(Math.random() * tiles.length);
+
+			// TODO: check if blocking
+
+			return tiles[rand];
+		}
+		return null;
+	};
+
+	Map.prototype.getRandomSpawnPosition = function() {
+		var tiles = [];
+		this.each(function(tile, pos) { tiles.push(pos); });
+
+		var tries = 0;
+		while(tries < 400) {
+			tries++;
+			var rand = Math.floor(Math.random() * tiles.length);
+
+			if (this.get(tiles[rand].x, tiles[rand].y).definition.name == 'Temple')
+				continue;
+
+			// TODO: check if blocking
+
+			return tiles[rand];
+		}
+		return null;
+	};
+
 	return Map;
 });

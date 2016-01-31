@@ -195,6 +195,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			this.hp -= dmg;
 			if(this.hp < 1) {
 				this.parent.remove(this);
+				this.parent.parent.creatureDeath(this);
 				this.parent.add( new Animation('img/death.png', this.position.sum(new V2(10,10)), new V2(7, 1), 200));
 			}
 		};

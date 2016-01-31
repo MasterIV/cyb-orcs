@@ -21,7 +21,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.time = 0;
 		this.day_length = 42000;
 		this.day = 0;
-		this.day_length = 4000;
 		this.paused = false;
 
 		this.gold_bounty = 0;
@@ -59,6 +58,12 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.paused = false;
 		this.remove(this.freeze);
 		this.parent.parent.togglePause();
+	};
+
+	Time.prototype.giveBounty = function() {
+		this.parent.parent.money += this.gold_bounty;
+		for (var i = 0; i < this.orc_bounty; i++)
+			this.parent.parent.spawnOrc();
 	};
 
 	Time.prototype.onClick = function() {

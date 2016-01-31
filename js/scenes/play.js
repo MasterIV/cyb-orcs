@@ -96,6 +96,8 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 			PlayScene.prototype.gameOver = function() {
 				game.scene = require('config/scenes').menu;
+				this.bgmusic.stop();
+				s.add('snd/background.ogg');
 			};
 
 			PlayScene.prototype.startMusic = function() {

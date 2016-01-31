@@ -15,6 +15,19 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 	graphic.add('img/rooms/housing_red.png');
 	graphic.add('img/rooms/housing_white.png');
 
+	graphic.add('img/rooms/icon_axe_red.png');
+	graphic.add('img/rooms/icon_axe_white.png');
+	graphic.add('img/rooms/icon_base_red.png');
+	graphic.add('img/rooms/icon_base_white.png');
+	graphic.add('img/rooms/icon_defence_red.png');
+	graphic.add('img/rooms/icon_defence_white.png');
+	graphic.add('img/rooms/icon_gold_red.png');
+	graphic.add('img/rooms/icon_gold_white.png');
+	graphic.add('img/rooms/icon_meat_red.png');
+	graphic.add('img/rooms/icon_meat_white.png');
+	graphic.add('img/rooms/icon_housing_red.png');
+	graphic.add('img/rooms/icon_housing_white.png');
+
 	graphic.add('img/gold_icon.png');
 	graphic.add('img/repair_icon.png');
 	graphic.add('img/heart_icon.png');
@@ -92,8 +105,8 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.hp = this.maxHp;
 		scene.housings += this.supply;
 
-		this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
-		this.overlay = new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic.replace('white', 'red'), .8);
+		this.add(new Image(shape.iconPos().sum(new V2(18, 18)), definition.icon));
+		this.overlay = new Image(shape.iconPos().sum(new V2(18, 18)), definition.icon.replace('white', 'red'));
 		this.add(this.overlay);
 
 		if(definition.inflation)

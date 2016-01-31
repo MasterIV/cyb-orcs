@@ -46,13 +46,29 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 
 		this.options = [];
 		this.option_names = [];
+
+		this.wait = 0;
+		this.shown = false;
+		this.clickable = false;
 	}
 
 	LevelSelect.prototype = new Entity();
 
+	LevelSelect.prototype.onUpdate = function(delta) {
+		if (this.clickable) return;
+
+		this.wait += delta;
+		if (this.wait > 1000) {
+			this.clickable = true;
+		}
+	};
+
 	LevelSelect.prototype.show = function(day, time) {
 		this.time = time;
 		this.day = day;
+		this.wait = 0;
+		this.shown = true;
+		this.clickable = false;
 		s.play('snd/raid_'+Math.ceil(Math.random()*5)+'.ogg');
 		//s.play('snd/level2.ogg');
 		this.getRandomLevels();
@@ -122,7 +138,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 	}
 
 	LevelSelect.prototype.onClick = function(pos) {
-		this.dispatchReverse(this.entities, 'click', pos);
+		if (this.clickable) this.dispatchReverse(this.entities, 'click', pos);
 		return true;
 	};
 

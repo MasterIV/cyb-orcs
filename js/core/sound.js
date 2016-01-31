@@ -3,7 +3,7 @@ define( function() {
 		sampels: [],
 				urls: [],
 
-			play: function( file ) {
+			play: function( file, loop ) {
 		var self = this;
 
 		if( !this.sampels[file] )
@@ -16,6 +16,8 @@ define( function() {
 		} else {
 			var sample = new Audio( file );
 			sample.onended = function() { self.sampels[file].push( this ); };
+			if (loop)
+				sample.onended = function() { this.play(); }
 			sample.play();
 			return sample;
 		}

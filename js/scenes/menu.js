@@ -12,6 +12,7 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 
 			var playButton = Button.create(new V2(0, 680), function() {
 				game.scene = require('config/scenes').play; s.play('snd/drums.ogg');
+				game.scene.startMusic();
 			}).img("img/main_btn_start.png");
 
 			var creditsButton = Button.create(new V2(0, 680), function() {

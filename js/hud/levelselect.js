@@ -3,38 +3,45 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 
 	g.add('img/UI_tooltip.png');
 	//s.add('snd/level.ogg');
+	g.add('img/wave_selection.png');
+	//s.add('snd/level2.ogg');
+	s.add('snd/raid_1.ogg');
+	s.add('snd/raid_2.ogg');
+	s.add('snd/raid_3.ogg');
+	s.add('snd/raid_4.ogg');
+	s.add('snd/raid_5.ogg');
 
 	function LevelSelect(parent) {
 		Entity.call(this, Zero(), new V2(parent.size.x, parent.size.y));
 
-		var selection_width = 270;
-		var selection_height = 60;
+		var selection_width = 222;
+		var selection_height = 90;
 		var info_height = 40;
 
 		var center = new V2(this.size.x / 2, this.size.y / 2);
 		// background
-		this.add( new ImageEntity(new V2(-425, -85).add(center), 'img/UI_tooltip.png') );
+		this.add( new ImageEntity(new V2(-640, -99).add(center), 'img/wave_selection.png') );
 		// title
-		this.add( new TextEntity(new V2(0, -55).add(center), 'Choose next town to attack:', font.center) );
+		//this.add( new TextEntity(new V2(0, -55).add(center), 'Choose next town to attack:', font.center) );
 
 		var self = this;
 
-		this.next1 = new Button(new V2(-415, -50).add(center), function() { self.selected(0); });
+		this.next1 = new Button(new V2(-380, -25).add(center), function() { self.selected(0); });
 		this.next1.text('', font.center, selection_width, selection_height);
 		this.add(this.next1);
-		this.overview1 = new LevelOverview(new V2(-415, -50 + selection_height).add(center), new V2(selection_width, info_height));
+		this.overview1 = new LevelOverview(new V2(-380, -60 + selection_height).add(center), new V2(selection_width, info_height));
 		this.add(this.overview1);
 
-		this.next2 = new Button(new V2(-140, -50).add(center), function() { self.selected(1); });
+		this.next2 = new Button(new V2(-108, -25).add(center), function() { self.selected(1); });
 		this.next2.text('', font.center, selection_width, selection_height);
 		this.add(this.next2);
-		this.overview2 = new LevelOverview(new V2(-140, -50 + selection_height).add(center), new V2(selection_width, info_height));
+		this.overview2 = new LevelOverview(new V2(-108, -60 + selection_height).add(center), new V2(selection_width, info_height));
 		this.add(this.overview2);
 
-		this.next3 = new Button(new V2(135, -50).add(center), function() { self.selected(2); });
+		this.next3 = new Button(new V2(158, -25).add(center), function() { self.selected(2); });
 		this.next3.text('', font.center, selection_width, selection_height);
 		this.add(this.next3);
-		this.overview3 = new LevelOverview(new V2(135, -50 + selection_height).add(center), new V2(selection_width, info_height));
+		this.overview3 = new LevelOverview(new V2(158, -60 + selection_height).add(center), new V2(selection_width, info_height));
 		this.add(this.overview3);
 
 		this.options = [];
@@ -47,6 +54,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 		this.time = time;
 		this.day = day;
 		s.play('snd/raid_'+Math.ceil(Math.random()*5)+'.ogg');
+		//s.play('snd/level2.ogg');
 		this.getRandomLevels();
 		this.next1.setText(this.option_names[0]);
 		this.next2.setText(this.option_names[1]);

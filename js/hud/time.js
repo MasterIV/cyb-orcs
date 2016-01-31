@@ -20,7 +20,12 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 		this.time = 0;
 		this.day_length = 42000;
+		this.day = 0;
+		this.day_length = 4000;
 		this.paused = false;
+
+		this.gold_bounty = 0;
+		this.orc_bounty = 0;
 	}
 
 	Time.prototype = new Entity();
@@ -34,9 +39,26 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 		this.time += delta;
 		if (this.time > this.day_length)
-			this.time -= this.day_length;
+			this.dayChange();
 		var new_progress = (this.time / this.day_length) * 336;
 		this.progress.size.x = new_progress;
+	};
+
+	Time.prototype.dayChange = function() {
+		this.time -= this.day_length;
+		this.day++;
+		this.paused = true;
+		this.add(this.freeze);
+		this.parent.parent.togglePause();
+		this.parent.showLevelSelect(this.day, this);
+	};
+
+	Time.prototype.setBounty = function(gold, orcs) {
+		this.gold_bounty = gold;
+		this.orc_bounty = orcs;
+		this.paused = false;
+		this.remove(this.freeze);
+		this.parent.parent.togglePause();
 	};
 
 	Time.prototype.onClick = function() {

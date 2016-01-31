@@ -145,7 +145,7 @@ var orknames = [
 ];
 
 var citynames = [
-	'Poppenbüttel',
+	'PoppenbÃ¼ttel',
 	'Buxtehude',
 	'Altenbeken',
 	'Stade',

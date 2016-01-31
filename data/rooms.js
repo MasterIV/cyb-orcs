@@ -16,7 +16,8 @@ var rooms = {
 		cost: 10,
 		hp: 40,
 		pic: 'img/rooms/housing_white.png',
-		supply: 1
+		supply: 1,
+		inflation: 3
 	},
 	meat: {
 		name: 'Butchery',

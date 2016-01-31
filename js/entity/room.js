@@ -92,11 +92,12 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.hp = this.maxHp;
 		scene.housings += this.supply;
 
-		//if(!definition.nobuild) {
-			this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
-			this.overlay = new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic.replace('white', 'red'), .8);
-			this.add(this.overlay);
-		//}
+		this.add(new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic, .8));
+		this.overlay = new Image(shape.iconPos().sum(new V2(14, 14)), definition.pic.replace('white', 'red'), .8);
+		this.add(this.overlay);
+
+		if(definition.inflation)
+			definition.cost += this.capacity = definition.inflation;
 
 		if(costs) {
 			this.add(new Actionanimation(costs, this.shape, false, graphic['img/gold_icon.png']));

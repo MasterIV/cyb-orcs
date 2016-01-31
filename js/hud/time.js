@@ -1,5 +1,5 @@
-define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'core/sound', 'definition/easing', 'geo/v2', 'geo/rect'],
-	function(Button, Entity, ImageEntity, Morph, g, s, Easing, V2, Rect) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/graphic', 'core/sound', 'definition/easing', 'geo/v2', 'basic/text', 'config/fonts'],
+	function(Button, Entity, ImageEntity, Morph, g, s, Easing, V2, Text, font) {
 
 	g.add('img/top_UI_sun.png');
 	g.add('img/top_UI_sun_bar.png');
@@ -17,6 +17,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.progress.size.x = 1;
 		// time freeze
 		this.freeze = new ImageEntity(Zero(), 'img/time_freeze.png');
+		this.dayDisplay = new Text(new V2(230, 66), "0", font.center);
+		this.add(this.dayDisplay);
 
 		this.time = 0;
 		this.day_length = 42000;
@@ -46,6 +48,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 	Time.prototype.dayChange = function() {
 		this.time -= this.day_length;
 		this.day++;
+		this.dayDisplay.text = this.day;
 		this.paused = true;
 		this.add(this.freeze);
 		this.parent.parent.togglePause();

@@ -142,7 +142,8 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 		if(this.heal) {
 			creature.hp = Math.min(creature.hp+this.heal, creature.skills.hp);
-			this.add(new Actionanimation(creature.skills.repair, this.shape, true, graphic['img/heart_icon.png']));
+			if(creature.hp < creature.skills.hp)
+				this.add(new Actionanimation(creature.skills.repair, this.shape, true, graphic['img/heart_icon.png']));
 
 		}
 	};

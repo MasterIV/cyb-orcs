@@ -132,36 +132,57 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 
 	Map.prototype.getRandomTemplePosition = function() {
 		var tiles = [];
+		var blocked = [];
+
+		for(var i in this.parent.entities) {
+			var e = this.parent.entities[i];
+			if(e.mapPos && !e.enemy) blocked.push(e.mapPos);
+		}
+
 		this.each(function(tile, pos) { if (tile.definition.name == 'Temple') tiles.push(pos); });
 
 		var tries = 0;
 		while(tries < 50) {
 			tries++;
 			var rand = Math.floor(Math.random() * tiles.length);
+			var block = false;
 
-			// TODO: check if blocking
+			for(var i in blocked)
+				if(blocked[i].equal(tiles[rand]))
+					block = true;
 
-			return tiles[rand];
+			if(!block) return tiles[rand];
 		}
+
 		return null;
 	};
 
 	Map.prototype.getRandomSpawnPosition = function() {
 		var tiles = [];
 		this.each(function(tile, pos) { tiles.push(pos); });
+		var blocked = [];
+
+		for(var i in this.parent.entities) {
+			var e = this.parent.entities[i];
+			if(e.mapPos && e.enemy) blocked.push(e.mapPos);
+		}
 
 		var tries = 0;
 		while(tries < 400) {
 			tries++;
 			var rand = Math.floor(Math.random() * tiles.length);
+			var block = false;
 
 			if (this.get(tiles[rand].x, tiles[rand].y).definition.name == 'Temple')
 				continue;
 
-			// TODO: check if blocking
+			for(var i in blocked)
+				if(blocked[i].equal(tiles[rand]))
+					block = true;
 
-			return tiles[rand];
+			if(!block) return tiles[rand];
 		}
+
 		return null;
 	};
 

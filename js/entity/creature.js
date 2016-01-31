@@ -4,6 +4,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		graphic.add('img/hero_silver_spritesheet.png');
 		graphic.add('img/orc_red_spritesheet.png');
 		graphic.add('img/orc_spritesheet.png');
+		graphic.add('img/orc_female_spritesheet.png');
 		graphic.add('img/select_arrow.png');
 		graphic.add('img/fight_animation.png');
 		graphic.add('img/death.png');
@@ -17,6 +18,13 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 
 			var img = enemy ? 'img/hero_silver_spritesheet.png' : 'img/orc_spritesheet.png';
 			this.img = new Animation(img, new V2(15, 15), new V2(4, enemy ? 4 : 6), 200, true);
+			this.name = orknames[(Math.random()*orknames.length)|0];
+
+			if( !enemy && Math.random() < .2 ) {
+				// Geschlechtsumwandlung
+				this.name = orkname_female[(Math.random()*orkname_female.length)|0];
+				this.img = new Animation('img/orc_female_spritesheet.png', new V2(15, 15), new V2(4, enemy ? 4 : 6), 200, true);
+			}
 
 			this.add(this.img);
 			this.cursor = new Image(new V2(42, -20), 'img/select_arrow.png', .5);
@@ -43,7 +51,6 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			}
 
 			this.hp = this.skills.hp;
-			this.name = orknames[(Math.random()*orknames.length)|0];
 		}
 
 		Creature.prototype = new Entity();

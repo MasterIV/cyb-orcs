@@ -115,6 +115,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 	Room.prototype.repair = function(skill) {
 		if(this.hp < 1 && skill) this.scene.housings += this.supply;
+		this.add(new Actionanimation(skill, this.shape, true, graphic['img/repair_icon.png']));
 		this.hp = Math.min(this.maxHp, this.hp+skill);
 	};
 
@@ -122,7 +123,6 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		if(this.hp < this.maxHp) {
 			this.repair(creature.skills.repair);
 			creature.train('repair');
-			this.add(new Actionanimation(creature.skills.repair, this.shape, true, graphic['img/repair_icon.png']));
 			return;
 		}
 

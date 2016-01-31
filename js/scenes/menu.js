@@ -8,6 +8,7 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 
 		function MenuScene() {
 			Scene.call(this);
+			var self = this;
 
 			var playButton = Button.create(new V2(0, 680), function() {
 				game.scene = require('config/scenes').play; s.play('snd/drums.ogg');
@@ -29,15 +30,38 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 			vLayout.add(helpButton);
 			this.center(vLayout);
 
-			//var easing = Easing.OUTELASTIC;
-			//var self = this;
-
-			//playButton.add(new Morph({ position: { y: 100 } }, 1500, easing));
-			//creditsButton.add(new Morph({ position: { y: 250 } }, 1500, easing));
-			//helpButton.add(new Morph({ position: { y: 400 } }, 1500, easing));
+			this.add(Button.create(new V2(1200, 20), function() {
+				self.toggleFullScreen();
+			}).rect(50, 50));
 		}
 
 		MenuScene.prototype = new Scene();
+
+
+		MenuScene.prototype.toggleFullScreen = function() {
+			if (!document.fullscreenElement &&    // alternative standard method
+				!document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+				if (document.body.requestFullscreen) {
+					document.body.requestFullscreen();
+				} else if (document.body.msRequestFullscreen) {
+					document.body.msRequestFullscreen();
+				} else if (document.body.mozRequestFullScreen) {
+					document.body.mozRequestFullScreen();
+				} else if (document.body.webkitRequestFullscreen) {
+					document.body.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				}
+			} else {
+				if (document.exitFullscreen) {
+					document.exitFullscreen();
+				} else if (document.msExitFullscreen) {
+					document.msExitFullscreen();
+				} else if (document.mozCancelFullScreen) {
+					document.mozCancelFullScreen();
+				} else if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				}
+			}
+		};
 
 		return MenuScene;
 	}

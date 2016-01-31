@@ -1,5 +1,5 @@
-define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v2', 'basic/image'],
-	function (Entity, config, graphic, Animation, V2, Image) {
+define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v2', 'basic/image', 'core/sound'],
+	function (Entity, config, graphic, Animation, V2, Image, sound) {
 		graphic.add('img/hero_gold_spritesheet.png');
 		graphic.add('img/hero_silver_spritesheet.png');
 		graphic.add('img/orc_red_spritesheet.png');
@@ -201,6 +201,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			if (target == null || typeof(target) != "object") return;
 			var current = this.map.get(this.mapPos.x, this.mapPos.y);
 			if (!current.lookup[target.id] && current.id != target.id) return;
+			if(!this.enemy) sound.play('snd/command_'+Math.ceil(Math.random()*4)+'.ogg')
 			this.dest = dest;
 		};
 

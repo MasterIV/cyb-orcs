@@ -1,4 +1,5 @@
-define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config', 'core/graphic'], function (Entity, ImageEntity, V2, Room, config, graphic) {
+define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config', 'core/graphic', 'core/sound'],
+	function (Entity, ImageEntity, V2, Room, config, graphic, sound) {
 	graphic.add('img/tiles_background.png');
 	graphic.add('img/select_arrow.png');
 
@@ -56,6 +57,7 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 
 	Map.prototype.selectUnit = function (unit) {
 		if (this.unit) this.unit.deselected();
+		if (this.unit != unit) sound.play('snd/select_'+Math.ceil(Math.random()*6)+'.ogg')
 		this.unit = unit;
 		this.scene.info.select(unit);
 		this.unit.selected();

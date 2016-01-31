@@ -4,6 +4,7 @@ var rooms = {
 		desc: 'Enables you to manifest your will in the world of the immortal.',
 		hp: 150,
 		pic: 'img/rooms/base_white.png',
+		icon: 'img/rooms/icon_base_white.png',
 		nobuild: true,
 		supply: 0.5,
 		gold: 0.5,
@@ -16,6 +17,7 @@ var rooms = {
 		cost: 10,
 		hp: 40,
 		pic: 'img/rooms/housing_white.png',
+		icon: 'img/rooms/icon_housing_white.png',
 		supply: 1,
 		inflation: 3
 	},
@@ -25,6 +27,7 @@ var rooms = {
 		cost: 30,
 		hp: 70,
 		pic: 'img/rooms/meat_white.png',
+		icon: 'img/rooms/icon_meat_white.png',
 		cooldown: 1000,
 		heal: .1
 	},
@@ -34,6 +37,7 @@ var rooms = {
 		cost: 15,
 		hp: 50,
 		pic: 'img/rooms/gold_white.png',
+		icon: 'img/rooms/icon_gold_white.png',
 		cooldown: 7000,
 		gold: 1
 	},
@@ -43,6 +47,7 @@ var rooms = {
 		cost: 20,
 		hp: 60,
 		pic: 'img/rooms/axe_white.png',
+		icon: 'img/rooms/icon_axe_white.png',
 		cooldown: 1000,
 		train: 1
 	},
@@ -52,6 +57,7 @@ var rooms = {
 		cost: 40,
 		hp: 80,
 		pic: 'img/rooms/defence_white.png',
+		icon: 'img/rooms/icon_defence_white.png',
 		cooldown: 3000,
 		ranged: 1
 	}

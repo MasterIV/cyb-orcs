@@ -16,8 +16,10 @@ define( function() {
 		} else {
 			var sample = new Audio( file );
 			sample.onended = function() { self.sampels[file].push( this ); };
-			if (loop)
+			if (loop) {
 				sample.onended = function() { this.play(); }
+				sample.loop = true;
+			}
 			sample.play();
 			return sample;
 		}

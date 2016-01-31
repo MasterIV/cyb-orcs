@@ -1,5 +1,5 @@
-define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip', 'basic/text', 'definition/font'],
-	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip, TextEntity, FontStyle) {
+define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rect', 'config/screen', 'core/graphic', 'core/sound', 'definition/colors', 'definition/easing', 'definition/layout', 'geo/v2', 'geo/rect', 'hud/tooltip', 'basic/text', 'config/fonts'],
+	function(Button, Entity, ImageEntity, Morph, RectEntity, screen, g, s, Colors, Easing, Layout, V2, Rect, Tooltip, TextEntity, font) {
 
 	g.add('img/UI.png');
 	for (var room in rooms) {
@@ -7,12 +7,11 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	}
 	s.add('snd/room.ogg');
 
-	function getTotalPrice(layout, room, definitions) {
+	function getTotalPrice(layout, room) {
 		var roomCosts = 0;
 
 		layout.each(function(){
-			var clickedRoom = definitions[room];
-			roomCosts += clickedRoom.cost;
+			roomCosts += rooms[room].cost;
 		});
 
 		return roomCosts;
@@ -41,29 +40,30 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		//this.add( new ImageEntity(Zero(), 'img/hud/hammer.png') );
 
 		// room shape preview
-		this.layout = new Layout(this.getRandomShape());
+		this.layout = this.getRandomShape();
 
 		var self = this;
 		var i = 0;
+
+		this.prices = {};
+
 		for (var room in rooms)
 			(function(room) {
 				var room_def = rooms[room];
 				if (room_def.nobuild) return;
+
 				var button_x = self.b_left + (self.b_size + self.b_spacing) * i;
 				var button = Button.create(new V2(button_x, self.b_top), function() {
 					self.roomClicked(room);
 				});
 				button.img(room_def.pic);
-				var actualRoomPrice = getTotalPrice(self.layout, room, rooms);
 
-				var fontStyle = null;
-				if(actualRoomPrice > self.playScene.money) {
-					fontStyle = new FontStyle(16, '#f00', 'monospace', '#555', '', 'left', 'top');
-				} else {
-					fontStyle = new FontStyle(16, '#fff', 'monospace', '#555', '', 'left', 'top');
-				}
-
+				var actualRoomPrice = getTotalPrice(self.layout, room);
+				var fontStyle = actualRoomPrice > self.playScene.money ? font.red : font.white;
 				var text = new TextEntity(new V2(button_x, self.b_top), actualRoomPrice, fontStyle);
+
+				self.prices[room] = text;
+
 				self.add(button);
 				self.add(text);
 				i++;
@@ -127,7 +127,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 
 	BuildMenu.prototype.built = function() {
 		this.tooltip.close()
-		this.layout = new Layout(this.getRandomShape());
+		this.layout = this.getRandomShape();
 		s.play('snd/room.ogg');
 	};
 
@@ -136,7 +136,15 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 	};
 
 	BuildMenu.prototype.getRandomShape = function() {
-		return shapes[Math.floor(Math.random()*(shapes.length-1))];
+		var layout = new Layout(shapes[Math.floor(Math.random()*(shapes.length-1))]);
+
+		for(var r in this.prices) {
+			var price = getTotalPrice(layout, r);
+			this.prices[r].text = price;
+			this.prices[r].font = price > this.playScene.money ? font.red : font.white;
+		}
+
+		return layout;
 	};
 
 	BuildMenu.prototype.moveIn = function() {

@@ -25,7 +25,7 @@ var rooms = {
 		hp: 70,
 		pic: 'img/rooms/meat_white.png',
 		cooldown: 1000,
-		heal: 4
+		heal: .1
 	},
 	mine: {
 		name: 'Gold Mine',

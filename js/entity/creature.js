@@ -7,6 +7,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 		graphic.add('img/select_arrow.png');
 		graphic.add('img/fight_animation.png');
 		graphic.add('img/death.png');
+		graphic.add('img/level_up.png');
 
 		var ts = config.size.tile;
 		var actionSpeed = 1000;
@@ -61,7 +62,11 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			this.ep[skill]+=epRate;
 			if (getLevel(this.ep[skill]) > this.levels[skill]) {
 				this.levels[skill]++;
+
+				if(skill = 'hp') this.hp += skills[skill].formel(this.levels[skill]) - this.skills[skill];
 				this.skills[skill] = skills[skill].formel(this.levels[skill]);
+
+				this.add(new Animation('img/level_up.png', new V2(-10,-14), 10, 150));
 			}
 		};
 
@@ -210,7 +215,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			if(this.hp < 1) {
 				this.parent.remove(this);
 				this.parent.parent.creatureDeath(this);
-				this.parent.add( new Animation('img/death.png', this.position.sum(new V2(10,10)), new V2(7, 1), 200));
+				this.parent.add( new Animation('img/death.png', this.position.sum(new V2(10,10)), new V2(7, 1), 150));
 			}
 		};
 

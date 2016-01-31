@@ -1,4 +1,4 @@
-define(['basic/entity'], function(Entity) {
+define(['basic/entity', 'config/fonts'], function(Entity, fonts) {
 
 	function Actionanimation(value, shape, type, icon) {
 		Entity.call(this);
@@ -22,15 +22,14 @@ define(['basic/entity'], function(Entity) {
 	Actionanimation.prototype.onDraw = function (ctx) {
 		var xPosition = this.shape.iconPos().x;
 		var yPosition = this.shape.iconPos().y + (this.animationWay * 2) * -1;
+		ctx.font = fonts.hud.size + "px " + fonts.hud.type;
+		ctx.fillStyle = fonts.hud.color;
 
 		if (this.value > 0 && this.type){
-			ctx.font = "14px arial";
-			ctx.fillStyle = "white";
 			ctx.fillText("+"+this.value, xPosition + 55, yPosition + 15 );
 			ctx.drawImage(this.image, xPosition + 30, yPosition, 20, 20);
 
 		} else if (this.value < 0 || !this.type) {
-			ctx.font = "14px arial";
 			ctx.fillStyle = "red";
 			ctx.fillText("-"+this.value, xPosition + 55, yPosition + 15 );
 			ctx.drawImage(this.image, xPosition + 30, yPosition, 20, 20);

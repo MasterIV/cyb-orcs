@@ -97,7 +97,6 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 			this.clickable = false;
 
 			this.cursor.selectRoom(this.layout.shape, rooms[room]);
-			console.log(actualRoomPrice, this.playScene.money);
 		}
 	};
 

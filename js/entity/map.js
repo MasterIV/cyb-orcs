@@ -69,7 +69,7 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 	Map.prototype.onClick = function (pos) {
 		var p = this.getPos(pos);
 		if (!this.layout) {
-			if (this.unit) this.unit.walk(p);
+			if (this.unit && this.unit.checkFree(p)) this.unit.walk(p);
 			return;
 		}
 	};

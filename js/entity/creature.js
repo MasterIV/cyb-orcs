@@ -147,6 +147,18 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			}
 		};
 
+		Creature.prototype.checkFree = function(p) {
+			for(var i in this.parent.entities) {
+				var e = this.parent.entities[i];
+				if(e instanceof Creature && this.enemy == e.enemy) {
+					if(e.dest && e.dest.equal(p)) return false;
+					if(e.mapPos.equal(p)) return false;
+				}
+			}
+
+			return true;
+		};
+
 		Creature.prototype.findCreatureTarget = function(room) {
 			var closest = null;
 			var dist = null;
@@ -174,7 +186,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			this.map.each(function(r, p) {
 				if(r.hp < 1) return;
 				var d = self.mapPos.dist(p);
-				if( dist == null || d < dist ) {
+				if(( dist == null || d < dist ) && self.checkFree(p)) {
 					closest = p;
 					dist = d;
 				}

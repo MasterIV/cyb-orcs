@@ -33,7 +33,7 @@ define(['basic/entity', 'basic/image', 'basic/text', 'config/fonts', 'core/graph
 		this.text2.text = values[2];
 		this.text3.text = values[3];
 		if (values[1] >= 5)
-			this.enemy_img.img = 'img/enemies.png';
+			this.enemy_img.img = g['img/enemies.png'];
 	};
 
 	return LevelOveriew;

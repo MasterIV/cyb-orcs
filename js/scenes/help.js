@@ -4,6 +4,8 @@ define(['lib/scene', 'entity/back'],
 			function HelpScene() {
 				Scene.call(this);
 				this.center(BackButton('menu'));
+
+				this.bg = 'img/main_bg.jpg';
 			}
 
 			HelpScene.prototype = new Scene();

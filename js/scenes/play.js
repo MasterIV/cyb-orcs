@@ -1,5 +1,7 @@
-define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity', 'core/game', 'entity/unitinfo'],
-		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity, game, UnitInfo) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity', 'core/game', 'entity/unitinfo', 'core/sound'],
+		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity, game, UnitInfo, s) {
+			s.add('snd/background.ogg');
+
 			function PlayScene() {
 				Scene.call(this);
 
@@ -94,6 +96,10 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 			PlayScene.prototype.gameOver = function() {
 				game.scene = require('config/scenes').menu;
+			};
+
+			PlayScene.prototype.startMusic = function() {
+				this.bgmusic = s.play('snd/background.ogg', true);
 			};
 
 			return PlayScene;

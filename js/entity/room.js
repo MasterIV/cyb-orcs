@@ -1,4 +1,4 @@
-define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image', 'entity/moneymation'], function(Entity, V2, config, graphic, Image, Moneymation) {
+define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image', 'entity/actionanimation'], function(Entity, V2, config, graphic, Image, Actionanimation) {
 	graphic.add('img/tiles_spritesheet.png');
 	graphic.add('img/doors.png');
 
@@ -14,6 +14,10 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 	graphic.add('img/rooms/meat_white.png');
 	graphic.add('img/rooms/housing_red.png');
 	graphic.add('img/rooms/housing_white.png');
+
+	graphic.add('img/gold_icon.png');
+	graphic.add('img/repair_icon.png');
+	graphic.add('img/heart_icon.png');
 
 	var ts = config.size.tile;
 	var roomId = 1;
@@ -95,7 +99,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		//}
 
 		if(costs) {
-			this.add(new Moneymation(costs, this.shape, false));
+			this.add(new Actionanimation(costs, this.shape, false, graphic['img/gold_icon.png']));
 			scene.money -= costs;
 		}
 	}
@@ -117,6 +121,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		if(this.hp < this.maxHp) {
 			this.repair(creature.skills.repair);
 			creature.train('repair');
+			this.add(new Actionanimation(creature.skills.repair, this.shape, true, graphic['img/repair_icon.png']));
 			return;
 		}
 
@@ -135,7 +140,11 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 			creature.train('hp');
 		}
 
-		if(this.heal) creature.hp = Math.min(creature.hp+this.heal, creature.skills.hp);
+		if(this.heal) {
+			creature.hp = Math.min(creature.hp+this.heal, creature.skills.hp);
+			this.add(new Actionanimation(creature.skills.repair, this.shape, true, graphic['img/heart_icon.png']));
+
+		}
 	};
 
 	Room.prototype.onUpdate = function(delta) {
@@ -149,7 +158,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 				if( this.gold ) {
 					var additionalMoney = (this.progress * this.gold * 1000 / this.cooldown) | 0;
 					this.scene.money += additionalMoney;
-					this.add(new Moneymation(additionalMoney, this.shape, true));
+					this.add(new Actionanimation(additionalMoney, this.shape, true, graphic['img/gold_icon.png']));
 				}
 
 				if( this.ranged ) {

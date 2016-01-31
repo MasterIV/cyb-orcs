@@ -145,5 +145,10 @@ define(['geo/v2', 'geo/rect', 'core/mouse'], function(V2, Rect, mouse) {
 		}
 	};
 
+	Entity.prototype.center = function (obj) {
+		obj.position.x = this.size.x / 2 - obj.size.x / 2;
+		this.add(obj);
+	};
+
 	return Entity;
 });

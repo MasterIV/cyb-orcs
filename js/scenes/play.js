@@ -1,5 +1,5 @@
-define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity', 'core/game'],
-		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity, game) {
+define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity', 'core/game', 'entity/unitinfo'],
+		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity, game, UnitInfo) {
 			function PlayScene() {
 				Scene.call(this);
 
@@ -29,6 +29,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 				this.hud = new HUD(this.size, cursor);
 				this.add( this.hud );
+				this.center( this.info = new UnitInfo());
 				this.paused = false;
 				this.map = map;
 				this.enemies = [];
@@ -85,7 +86,7 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 					if (this.orcs <= 0)
 						this.gameOver();
 				}
-			}
+			};
 
 			PlayScene.prototype.gameOver = function() {
 				game.scene = require('config/scenes').menu;

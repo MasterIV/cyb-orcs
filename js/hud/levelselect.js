@@ -63,13 +63,16 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 		}
 	};
 
-	LevelSelect.prototype.show = function(day, time) {
+	LevelSelect.prototype.show = function(day, time, failed) {
 		this.time = time;
 		this.day = day;
 		this.wait = 0;
 		this.shown = true;
 		this.clickable = false;
-		s.play('snd/raid_'+Math.ceil(Math.random()*5)+'.ogg');
+		if (!failed)
+			s.play('snd/raid_'+Math.ceil(Math.random()*5)+'.ogg');
+		else
+			s.play('snd/defeat.ogg');
 		//s.play('snd/level2.ogg');
 		this.getRandomLevels();
 		this.next1.setText(this.option_names[0]);

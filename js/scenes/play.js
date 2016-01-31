@@ -1,6 +1,6 @@
 define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basic/button', 'entity/creature', 'entity/cursor', 'definition/layout', 'basic/entity', 'core/game', 'entity/unitinfo', 'core/sound'],
 		function(Scene, ViewPort, V2, Map, HUD, Button, Creature, Cursor, Layout, Entity, game, UnitInfo, s) {
-			s.add('snd/background.ogg');
+			s.add('snd/noroom.ogg');
 
 			function PlayScene() {
 				Scene.call(this);
@@ -73,13 +73,17 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 			};
 
 			PlayScene.prototype.spawnOrc = function() {
-				if (this.orcs >= this.housings) return;
+				if (this.orcs >= this.housings) {
+					s.play('snd/noroom.ogg');
+					return true;
+				}
 
 				var pos = this.map.getRandomTemplePosition();
-				if (!pos) return;
+				if (!pos) return false;
 
 				this.viewport.add( new Creature(pos, this.map, 1, false) );
 				this.orcs++;
+				return false;
 			};
 
 			PlayScene.prototype.creatureDeath = function(creature) {
@@ -96,12 +100,12 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 
 			PlayScene.prototype.gameOver = function() {
 				game.scene = require('config/scenes').menu;
-				this.bgmusic.stop();
-				s.add('snd/background.ogg');
+				//this.bgmusic.stop();
+				//s.add('snd/background.ogg');
 			};
 
 			PlayScene.prototype.startMusic = function() {
-				this.bgmusic = s.play('snd/background.ogg', true);
+				//this.bgmusic = s.play('snd/background.ogg', true);
 			};
 
 			return PlayScene;

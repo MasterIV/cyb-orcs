@@ -21,10 +21,10 @@ define(['basic/entity', 'geo/v2', 'hud/buildmenu', 'hud/resources', 'hud/time', 
 
 	HUD.prototype = new Entity();
 
-	HUD.prototype.showLevelSelect = function(day, time) {
+	HUD.prototype.showLevelSelect = function(day, time, failed) {
 		this.block(this.levelselect);
 		this.levelselect.setParent(this);
-		this.levelselect.show(day, time);
+		this.levelselect.show(day, time, failed);
 	};
 
 	HUD.prototype.hideLevelSelect = function(values, time) {

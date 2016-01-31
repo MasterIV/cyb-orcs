@@ -5,6 +5,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 	g.add('img/top_UI_sun_bar.png');
 	g.add('img/time_freeze.png');
 	s.add('snd/pause.ogg');
+	s.add('snd/victory.ogg');
 
 	function Time(parent) {
 		Entity.call(this, new V2(parent.size.x - 456, -100), new V2(456, 100));
@@ -32,6 +33,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 		this.gold_bounty = 0;
 		this.orc_bounty = 0;
+		this.bounty_given = true;
 	}
 
 	Time.prototype = new Entity();
@@ -57,7 +59,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.paused = true;
 		this.freeze.visible = true;
 		this.parent.parent.togglePause();
-		this.parent.showLevelSelect(this.day, this);
+		this.parent.showLevelSelect(this.day, this, !this.bounty_given);
 	};
 
 	Time.prototype.setBounty = function(gold, orcs) {
@@ -66,12 +68,19 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.paused = false;
 		this.freeze.visible = false;
 		this.parent.parent.togglePause();
+		this.bounty_given = false;
 	};
 
 	Time.prototype.giveBounty = function() {
+		this.bounty_given = true;
 		this.parent.parent.money += this.gold_bounty;
+		one_ret = false;
 		for (var i = 0; i < this.orc_bounty; i++)
-			this.parent.parent.spawnOrc();
+			if(this.parent.parent.spawnOrc())
+				if (!one_ret)
+					one_ret = true;
+		if(!one_ret)
+			s.play('snd/victory.ogg');
 	};
 
 	Time.prototype.togglePause = function() {

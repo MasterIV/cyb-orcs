@@ -33,6 +33,10 @@ define(['lib/scene', 'lib/viewport', 'geo/v2', 'entity/map', 'entity/hud', 'basi
 				this.paused = false;
 				this.map = map;
 				this.enemies = [];
+
+				this.keyAware.push({
+					up: function(key) { if(key == 'space') self.hud.time.togglePause(); }
+				});
 			}
 
 			PlayScene.prototype = new Scene();

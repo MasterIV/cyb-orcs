@@ -66,13 +66,17 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 			this.parent.parent.spawnOrc();
 	};
 
-	Time.prototype.onClick = function() {
+	Time.prototype.togglePause = function() {
 		this.paused = this.parent.parent.togglePause();
 		if (this.paused) {
 			this.add(this.freeze);
 			s.play('snd/pause.ogg');
 		} else
 			this.remove(this.freeze);
+	};
+
+	Time.prototype.onClick = function() {
+		this.togglePause();
 		return true;
 	};
 

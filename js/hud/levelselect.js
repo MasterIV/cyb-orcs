@@ -91,32 +91,31 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 		var orcs = 0;
 		switch(level) {
 			case 1:
-				enemies = Math.ceil(day * .33);
-				levels = 1 + Math.floor(day * .07);
-				gold = 20 + day;
+				enemies = Math.ceil(day * .2);
+				levels = Math.ceil(day * .07);
+				gold = 14 + day;
 				break;
 			case 2:
-				enemies = Math.ceil(day * .4);
-				levels = 1 + Math.floor(day * .1);
-				gold = 20 + day * 2;
+				enemies = Math.ceil(day * .25);
+				levels = Math.ceil(day * .1);
+				gold = 19 + day;
 				break;
 			case 3:
-				enemies = 1 + Math.ceil(day * .5);
-				levels = 1 + Math.floor(day * .15);
+				enemies = Math.ceil(day * .3);
+				levels = Math.ceil(day * .15);
 				gold = 20 + day * 2;
-				orcs = 1;
 				break;
 			case 4:
-				enemies = 1 + Math.ceil(day * .6);
-				levels = 1 + Math.floor(day * .2);
-				gold = 20 + day * 3;
+				enemies = 1 + Math.ceil(day * .3);
+				levels = Math.ceil(day * .2);
+				gold = 20 + day * 2;
 				orcs = 1;
 				break;
 			case 5:
-				enemies = 2 + Math.ceil(day * .7);
-				levels = 1 + Math.floor(day * .25);
+				enemies = 1 + Math.ceil(day * .35);
+				levels = Math.ceil(day * .25);
 				gold = 20 + day * 3;
-				orcs = 2;
+				orcs = 1;
 				break;
 		}
 		return [enemies, levels, gold, orcs];

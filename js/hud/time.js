@@ -11,12 +11,17 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 
 		// background
 		this.add( new ImageEntity(Zero(), 'img/top_UI_sun.png') );
+
 		// progress bar
 		this.progress = new ImageEntity(new V2(69, 24), 'img/top_UI_sun_bar.png');
 		this.add(this.progress);
 		this.progress.size.x = 1;
+
 		// time freeze
 		this.freeze = new ImageEntity(Zero(), 'img/time_freeze.png');
+		this.add(this.freeze);
+		this.freeze.visible = false;
+
 		this.dayDisplay = new Text(new V2(230, 66), "0", font.center);
 		this.add(this.dayDisplay);
 
@@ -50,7 +55,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.day++;
 		this.dayDisplay.text = this.day;
 		this.paused = true;
-		this.add(this.freeze);
+		this.freeze.visible = true;
 		this.parent.parent.togglePause();
 		this.parent.showLevelSelect(this.day, this);
 	};
@@ -59,7 +64,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 		this.gold_bounty = gold;
 		this.orc_bounty = orcs;
 		this.paused = false;
-		this.remove(this.freeze);
+		this.freeze.visible = false;
 		this.parent.parent.togglePause();
 	};
 
@@ -72,10 +77,10 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'core/grap
 	Time.prototype.togglePause = function() {
 		this.paused = this.parent.parent.togglePause();
 		if (this.paused) {
-			this.add(this.freeze);
+			this.freeze.visible = true;
 			s.play('snd/pause.ogg');
 		} else
-			this.remove(this.freeze);
+			this.freeze.visible = false;
 	};
 
 	Time.prototype.onClick = function() {

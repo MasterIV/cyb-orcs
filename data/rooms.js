@@ -19,7 +19,7 @@ var rooms = {
 		pic: 'img/rooms/housing_white.png',
 		icon: 'img/rooms/icon_housing_white.png',
 		supply: 1,
-		inflation: 3
+		inflation: 2
 	},
 	meat: {
 		name: 'Butchery',
@@ -54,11 +54,11 @@ var rooms = {
 	voodoo: {
 		name: 'Voodoo Cave',
 		desc: 'Let your orcs perform dark voodoo rituals to harm your enemies from the distance.',
-		cost: 40,
+		cost: 50,
 		hp: 80,
 		pic: 'img/rooms/defence_white.png',
 		icon: 'img/rooms/icon_defence_white.png',
-		cooldown: 3000,
+		cooldown: 2000,
 		ranged: 1
 	}
 };

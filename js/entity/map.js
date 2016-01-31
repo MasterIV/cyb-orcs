@@ -2,6 +2,7 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 	function (Entity, ImageEntity, V2, Room, config, graphic, sound) {
 	graphic.add('img/tiles_background.png');
 	graphic.add('img/select_arrow.png');
+	graphic.add('img/edges.png');
 
 	var size = config.size;
 	var probability = .1;
@@ -20,12 +21,27 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 		for (var x = 0; x < size.map.x; x++) {
 			this.tiles[x] = [];
 
-			for (var y = 0; y < size.map.y; y++) {
-				this.tiles[x][y] = Math.random() < probability ? 1 : null;
-				this.ctx.drawImage(graphic['img/tiles_background.png'],
-					size.tile.x * Math.floor(Math.random() * 5), size.tile.y * Number(this.tiles[x][y]), size.tile.x, size.tile.y,
-					size.tile.x * x, size.tile.y * y, size.tile.x, size.tile.y);
-			}
+			for (var y = 0; y < size.map.y; y++)
+				if(y > 0 && x > 0 && x < size.map.x-1 && y < size.map.y-1 ) {
+					this.tiles[x][y] = Math.random() < probability ? 1 : null;
+					this.ctx.drawImage(graphic['img/tiles_background.png'],
+						size.tile.x * Math.floor(Math.random() * 5), size.tile.y * Number(this.tiles[x][y]), size.tile.x, size.tile.y,
+						size.tile.x * x, size.tile.y * y, size.tile.x, size.tile.y);
+				} else {
+					this.tiles[x][y] = 1;
+					var ex = 0;
+					var ey = 0;
+
+					if(x>0) ex++;
+					if(y>0) ey++;
+					if(x>size.map.x-2) ex++;
+					if(y>size.map.y-2) ey++;
+
+					this.ctx.drawImage(graphic['img/edges.png'],
+						ex*size.tile.x, ey*size.tile.y, size.tile.x, size.tile.y,
+						size.tile.x * x, size.tile.y * y, size.tile.x, size.tile.y);
+
+				}
 		}
 
 		this.target_icon = new ImageEntity(Zero(), 'img/select_arrow.png');
@@ -57,7 +73,7 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 
 	Map.prototype.selectUnit = function (unit) {
 		if (this.unit) this.unit.deselected();
-		if (this.unit != unit) sound.play('snd/select_'+Math.ceil(Math.random()*6)+'.ogg')
+		if (this.unit != unit) sound.play('snd/select_'+Math.ceil(Math.random()*6)+'.ogg');
 		this.unit = unit;
 		this.scene.info.select(unit);
 		this.unit.selected();

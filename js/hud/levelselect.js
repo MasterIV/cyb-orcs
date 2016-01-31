@@ -2,7 +2,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 	function(Button, Entity, ImageEntity, TextEntity, font, g, s, V2, Rect, LevelOverview) {
 
 	g.add('img/UI_tooltip.png');
-	s.add('snd/level.ogg');
+	//s.add('snd/level.ogg');
 
 	function LevelSelect(parent) {
 		Entity.call(this, Zero(), new V2(parent.size.x, parent.size.y));
@@ -46,7 +46,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/text', 'config/fon
 	LevelSelect.prototype.show = function(day, time) {
 		this.time = time;
 		this.day = day;
-		s.play('snd/level.ogg');
+		s.play('snd/raid_'+Math.ceil(Math.random()*5)+'.ogg');
 		this.getRandomLevels();
 		this.next1.setText(this.option_names[0]);
 		this.next2.setText(this.option_names[1]);

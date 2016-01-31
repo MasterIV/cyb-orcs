@@ -110,7 +110,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		this.add(this.overlay);
 
 		if(definition.inflation)
-			definition.cost += this.capacity = definition.inflation;
+			definition.cost += this.capacity * definition.inflation;
 
 		if(costs) {
 			this.add(new Actionanimation(costs, this.shape, false, graphic['img/gold_icon.png']));

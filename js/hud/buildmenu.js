@@ -86,7 +86,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 
 	BuildMenu.prototype.postDraw = function(ctx) {
 		var self = this;
-		var pos = new V2(748, 64).add(this.position);
+		var pos = new V2(748, 64);
 
 		var max_x = 0;
 		var max_y = 0;

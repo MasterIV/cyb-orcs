@@ -22,6 +22,7 @@ define(['lib/scene', 'basic/button', 'core/game', 'geo/v2', 'transitions/slidein
 
 			var helpButton = Button.create(new V2(0, 680), function() {
 				game.scene = new SlideInLeftTransition(require('config/scenes').help, 1000, Easing.OUTQUAD);
+				require('config/scenes').help.reset();
 			}).img("img/main_btn_help.png");
 
 			this.bg = "img/main_bg.jpg";

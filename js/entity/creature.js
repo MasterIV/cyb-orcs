@@ -72,7 +72,7 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			if (getLevel(this.ep[skill]) > this.levels[skill]) {
 				this.levels[skill]++;
 
-				if(skill = 'hp') this.hp += skills[skill].formel(this.levels[skill]) - this.skills[skill];
+				if(skill == 'hp') this.hp += skills[skill].formel(this.levels[skill]) - this.skills[skill];
 				this.skills[skill] = skills[skill].formel(this.levels[skill]);
 
 				this.add(new Animation('img/level_up.png', new V2(-10,-14), 10, 150));

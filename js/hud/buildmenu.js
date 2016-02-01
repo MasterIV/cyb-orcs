@@ -84,10 +84,8 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 			this.prices[r].font = this.prices[r].text > this.playScene.money ? font.red : font.white;
 	};
 
-	BuildMenu.prototype.draw = function(ctx) {
-		Entity.prototype.draw.call(this, ctx);
+	BuildMenu.prototype.postDraw = function(ctx) {
 		var self = this;
-
 		var pos = new V2(748, 64).add(this.position);
 
 		var max_x = 0;
@@ -110,7 +108,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 				ctx.fillRect((pos.x + x*40)|0, (pos.y + y*40)|0, 40, 40);
 				ctx.strokeRect((pos.x + x*40)|0, (pos.y + y*40)|0, 40, 40);
 			});
-	}
+	};
 
 	BuildMenu.prototype.roomClicked = function(room) {
 		if (!this.clickable) return;

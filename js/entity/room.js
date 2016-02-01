@@ -2,31 +2,13 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 	graphic.add('img/tiles_spritesheet.png');
 	graphic.add('img/doors.png');
 
-	graphic.add('img/rooms/axe_red.png');
-	graphic.add('img/rooms/axe_white.png');
-	graphic.add('img/rooms/base_red.png');
-	graphic.add('img/rooms/base_white.png');
-	graphic.add('img/rooms/defence_red.png');
-	graphic.add('img/rooms/defence_white.png');
-	graphic.add('img/rooms/gold_red.png');
-	graphic.add('img/rooms/gold_white.png');
-	graphic.add('img/rooms/meat_red.png');
-	graphic.add('img/rooms/meat_white.png');
-	graphic.add('img/rooms/housing_red.png');
-	graphic.add('img/rooms/housing_white.png');
-
-	graphic.add('img/rooms/icon_axe_red.png');
 	graphic.add('img/rooms/icon_axe_white.png');
-	graphic.add('img/rooms/icon_base_red.png');
 	graphic.add('img/rooms/icon_base_white.png');
-	graphic.add('img/rooms/icon_defence_red.png');
 	graphic.add('img/rooms/icon_defence_white.png');
-	graphic.add('img/rooms/icon_gold_red.png');
 	graphic.add('img/rooms/icon_gold_white.png');
-	graphic.add('img/rooms/icon_meat_red.png');
 	graphic.add('img/rooms/icon_meat_white.png');
-	graphic.add('img/rooms/icon_housing_red.png');
 	graphic.add('img/rooms/icon_housing_white.png');
+	graphic.add('img/rooms/icon_red.png');
 
 	graphic.add('img/gold_icon.png');
 	graphic.add('img/repair_icon.png');
@@ -34,6 +16,8 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 
 	var ts = config.size.tile;
 	var roomId = 1;
+	var ico = new V2(50,50);
+
 
 	function Door(p1, p2, map) {
 		if(p1.x == p2.x) Entity.call(this, new V2(p2.x*ts.x, (p2.y-.5)*ts.y ), new V2(ts.x, ts.y));
@@ -106,8 +90,7 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		scene.housings += this.supply;
 
 		this.add(new Image(shape.iconPos().sum(new V2(18, 18)), definition.icon));
-		this.overlay = new Image(shape.iconPos().sum(new V2(18, 18)), definition.icon.replace('white', 'red'));
-		this.add(this.overlay);
+		this.overlay = shape.iconPos().sum(new V2(23, 23));
 
 		if(definition.inflation)
 			definition.cost += this.capacity * definition.inflation;
@@ -163,7 +146,6 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 	};
 
 	Room.prototype.onUpdate = function(delta) {
-		if(this.overlay) this.overlay.alpha = 1-(this.hp/this.maxHp);
 		if(this.hp > 0 && (this.gold || this.ranged)) {
 			this.delta += delta;
 
@@ -261,6 +243,17 @@ define(['basic/entity', 'geo/v2', 'config/config', 'core/graphic', 'basic/image'
 		ctx.drawImage(graphic['img/tiles_spritesheet.png'],
 			0, shapes.indexOf(this.shape.shape)*ts.y*2, ts.x*3, ts.y*2,
 			0, 0, ts.x*3, ts.y*2 );
+	};
+
+	Room.prototype.postDraw = function(ctx) {
+		var percent = 1-this.hp/this.maxHp;
+		if(percent) {
+			var height = ico.y*percent;
+			ctx.drawImage(graphic['img/rooms/icon_red.png'],
+				0, ico.y-height, ico.x, height,
+				this.overlay.x, this.overlay.y+ico.y-height, ico.x, height
+			);
+		}
 	};
 
 	return Room;

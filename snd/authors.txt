@@ -6,3 +6,5 @@ pause.ogg
 	CC-BY 3.0 by notembug (http://www.freesound.org/people/notembug/sounds/264284/)
 level.ogg
 	CC0 by hiddenpersuader (http://www.freesound.org/people/hiddenpersuader/sounds/155460/)
+background.ogg
+	CC0 by Emanuel De Molliner

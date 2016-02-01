@@ -166,8 +166,11 @@ define(['basic/entity', 'config/config', 'core/graphic', 'lib/animation', 'geo/v
 			for(var i in this.parent.entities) {
 				var e = this.parent.entities[i];
 				if(e instanceof Creature && this.enemy == e.enemy) {
-					if(e.dest && e.dest.equal(p)) return false;
-					if(e.mapPos.equal(p)) return false;
+					if(e.dest) {
+						if(e.dest.equal(p)) return false;
+					} else if(e.mapPos.equal(p)) {
+						return false;
+					}
 				}
 			}
 

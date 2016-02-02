@@ -5,6 +5,7 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		Entity.call(this, map.position, map.size);
 		this.layout = null;
 		this.map = map;
+		this.offset = Zero();
 	}
 
 	Cursor.prototype = new Entity();
@@ -12,7 +13,7 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 	Cursor.prototype.draw = function (ctx) {
 		var self = this;
 		if (self.layout) {
-			var pos = self.map.getPos(self.map.relativeMouse());
+			var pos = self.map.getPos(self.map.relativeMouse()).add(this.offset);
 			self.layout.eachRel(pos, function (x, y) {
 				ctx.fillStyle = self.map.get(x, y) ? 'rgba(255,55,55,0.5)' : 'rgba(255,255,255,0.5)';
 				ctx.fillRect(x * size.tile.x, y * size.tile.y, size.tile.x, size.tile.y);
@@ -22,7 +23,7 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 
 	Cursor.prototype.onClick = function (pos) {
 		if (this.layout) {
-			var p = this.map.getPos(pos);
+			var p = this.map.getPos(pos).add(this.offset);
 			var self = this;
 			var possible = true;
 
@@ -46,12 +47,15 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 	Cursor.prototype.selectRoom = function (layout, type) {
 		this.layout = new Layout(layout);
 		this.type = type;
+		this.offset.x = layout.cursorOffset[0];
+		this.offset.y = layout.cursorOffset[1];
 		return this.layout;
 	};
 
 	Cursor.prototype.deselectRoom = function () {
 		this.layout = null;
 		this.type = null;
+		this.offset = Zero();
 	};
 
 	return Cursor;

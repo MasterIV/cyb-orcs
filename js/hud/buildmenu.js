@@ -114,7 +114,7 @@ define(['basic/button', 'basic/entity', 'basic/image', 'basic/morph', 'basic/rec
 		if (!this.clickable) return;
 
 		var actualRoomPrice = getTotalPrice(this.layout, room, this.roomDefinitions);
-		if(actualRoomPrice < this.playScene.money) {
+		if(actualRoomPrice <= this.playScene.money) {
 			this.clickedRoom = rooms[room];
 			this.add( new Morph( { position: { y: this.parent.size.y } }, 500, Easing.INOUTCUBIC, this.moveOutFinished ) );
 			this.clickable = false;

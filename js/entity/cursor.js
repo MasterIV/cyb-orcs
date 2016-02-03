@@ -6,6 +6,7 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		this.layout = null;
 		this.map = map;
 		this.offset = Zero();
+		this.touch = Zero();
 	}
 
 	Cursor.prototype = new Entity();
@@ -14,6 +15,8 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		var self = this;
 		if (self.layout) {
 			var pos = self.map.getPos(self.map.relativeMouse()).add(this.offset);
+			if (this.touch.x != 0 || this.touch.y != 0)
+				pos = self.touch;
 			var allred = !self.map.isConnected(pos, self.layout);
 			self.layout.eachRel(pos, function (x, y) {
 				ctx.fillStyle = self.map.get(x, y) || allred ? 'rgba(255,55,55,0.5)' : 'rgba(255,255,255,0.5)';
@@ -22,10 +25,16 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		}
 	};
 
-	Cursor.prototype.onClick = function (pos) {
+	Cursor.prototype.onClick = function (pos, touch) {
 		if (this.layout) {
 			var p = this.map.getPos(pos).add(this.offset);
 			var self = this;
+			if (touch) {
+				if (!this.touch.equal(p)) {
+					this.touch = p;
+					return true;
+				}
+			}
 			var possible = true;
 
 			this.layout.eachRel(p, function (x, y) {
@@ -38,6 +47,8 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 			if (!this.build_menu.allowBuild()) return true;
 			this.map.addRoom(p, this.layout, this.type);
 			this.layout = null;
+			this.offset = Zero();
+			this.touch = Zero();
 			this.build_menu.built()
 			return true;
 		}
@@ -59,6 +70,7 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		this.layout = null;
 		this.type = null;
 		this.offset = Zero();
+		this.touch = Zero();
 	};
 
 	return Cursor;

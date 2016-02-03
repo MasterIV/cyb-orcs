@@ -15,9 +15,9 @@ define(['geo/v2', 'core/game'], function(V2, game) {
 				game.scene.mousedown( self );
 		};
 
-		gameframe.onmouseup = function( ev ) {
+		gameframe.onmouseup = function( ev, touch ) {
 			if( game.scene.click )
-				game.scene.click( self );
+				game.scene.click( self, touch );
 			if( game.scene.mouseup )
 				game.scene.mouseup( self );
 		};
@@ -36,7 +36,7 @@ define(['geo/v2', 'core/game'], function(V2, game) {
 		};
 
 		gameframe.ontouchend = function( ev ) {
-			this.onmouseup( ev.changedTouches[0] );
+			this.onmouseup( ev.changedTouches[0], true );
 
 			self.x = -1;
 			self.y = -1;

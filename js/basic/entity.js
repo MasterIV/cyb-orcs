@@ -110,15 +110,15 @@ define(['geo/v2', 'geo/rect', 'core/mouse'], function(V2, Rect, mouse) {
 		ctx.restore();
 	};
 
-	Entity.prototype.click = function (pos) {
+	Entity.prototype.click = function (pos, touch) {
 		pos = pos.dif(this.position);
 		if (!this.getArea().inside(pos)) return;
-		if (this.onClick && this.onClick(pos)) return true;
+		if (this.onClick && this.onClick(pos, touch)) return true;
 
 		if (this.blocking.length) {
-			return this.dispatchReverse(this.blocking, 'click', pos);
+			return this.dispatchReverse(this.blocking, 'click', pos, touch);
 		} else {
-			return this.dispatchReverse(this.entities, 'click', pos);
+			return this.dispatchReverse(this.entities, 'click', pos, touch);
 		}
 	};
 

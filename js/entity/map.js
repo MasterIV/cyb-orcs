@@ -100,6 +100,18 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 					callback(this.tiles[x][y], new V2(x, y));
 	};
 
+	Map.prototype.isConnected = function(pos, layout) {
+		var connected = false;
+		var self = this;
+		layout.eachRel(pos, function(x, y) {
+			if (self.get(x - 1, y) instanceof Room) connected = true;
+			if (self.get(x + 1, y) instanceof Room) connected = true;
+			if (self.get(x, y - 1) instanceof Room) connected = true;
+			if (self.get(x, y + 1) instanceof Room) connected = true;
+		});
+		return connected;
+	};
+
 	Map.prototype.addRoom = function (pos, layout, type) {
 		var costs = 0;
 		if (typeof(layout) != "undefined") {
@@ -108,7 +120,7 @@ define(['basic/entity', 'basic/image', 'geo/v2', 'entity/room', 'config/config',
 			});
 		}
 
-		if (costs < this.scene.money || costs == 0) {
+		if (costs <= this.scene.money || costs == 0) {
 			var self = this;
 			var room = new Room(new V2(pos.x * size.tile.x, pos.y * size.tile.y), layout, type, this.scene);
 			room.setParent(this);

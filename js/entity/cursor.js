@@ -14,8 +14,9 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 		var self = this;
 		if (self.layout) {
 			var pos = self.map.getPos(self.map.relativeMouse()).add(this.offset);
+			var allred = !self.map.isConnected(pos, self.layout);
 			self.layout.eachRel(pos, function (x, y) {
-				ctx.fillStyle = self.map.get(x, y) ? 'rgba(255,55,55,0.5)' : 'rgba(255,255,255,0.5)';
+				ctx.fillStyle = self.map.get(x, y) || allred ? 'rgba(255,55,55,0.5)' : 'rgba(255,255,255,0.5)';
 				ctx.fillRect(x * size.tile.x, y * size.tile.y, size.tile.x, size.tile.y);
 			});
 		}
@@ -30,6 +31,8 @@ define(['basic/entity', 'config/config', 'definition/layout', 'geo/v2'], functio
 			this.layout.eachRel(p, function (x, y) {
 				if (self.map.get(x, y)) possible = false;
 			});
+			if (possible)
+				possible = self.map.isConnected(p, this.layout);
 
 			if (!possible) return true;
 			if (!this.build_menu.allowBuild()) return true;
